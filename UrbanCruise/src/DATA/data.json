@@ -1,0 +1,355 @@
+{
+  "vehicles": [
+    {
+      "brand": "Hyundai",
+      "model": {
+        "Bayon": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/hyundai/bayon.png",
+          "power": "100 HP",
+          "engineSize": "1398 cc",
+          "gearbox": "Automatic",
+          "bodyType": "SUV",
+          "fuelType": "Gas"
+        },
+        "i20": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/hyundai/i20.png",
+          "power": "100 HP",
+          "engineSize": "1368 cc",
+          "gearbox": "Automatic",
+          "bodyType": "Hatchback",
+          "fuelType": "Gas"
+        },
+        "Creta": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/hyundai/bayon.png",
+          "power": "115 HP",
+          "engineSize": "1497 cc",
+          "gearbox": "Automatic",
+          "bodyType": "SUV",
+          "fuelType": "Gas"
+        },
+        "Tucson": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/hyundai/i20.png",
+          "power": "183 HP",
+          "engineSize": "1999 cc",
+          "gearbox": "Automatic",
+          "bodyType": "SUV",
+          "fuelType": "Diesel"
+        }
+      }
+    },
+
+    {
+      "brand": "BMW",
+      "model": {
+        "320d": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/bmw/320d.png",
+          "power": "187 HP",
+          "engineSize": "1995 cc",
+          "gearbox": "Automatic",
+          "bodyType": "Sedan",
+          "fuelType": "Diesel"
+        },
+        "520i": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/bmw/520i.png",
+          "power": "170 HP",
+          "engineSize": "1597 cc",
+          "gearbox": "Automatic",
+          "bodyType": "Sedan",
+          "fuelType": "Gas"
+        },
+        "X5": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/bmw/320d.png",
+          "power": "335 HP",
+          "engineSize": "2998 cc",
+          "gearbox": "Automatic",
+          "bodyType": "SUV",
+          "fuelType": "Gas"
+        },
+        "X7": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/bmw/520i.png",
+          "power": "376 HP",
+          "engineSize": "2993 cc",
+          "gearbox": "Automatic",
+          "bodyType": "SUV",
+          "fuelType": "Diesel"
+        }
+      }
+    },
+
+    {
+      "brand": "Toyota",
+      "model": {
+        "Corolla": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/toyota/corolla.png",
+          "power": "123 HP",
+          "engineSize": "1490 cc",
+          "gearbox": "Automatic",
+          "bodyType": "Sedan",
+          "fuelType": "Gas"
+        },
+        "Camry": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/toyota/corolla.png",
+          "power": "215 HP",
+          "engineSize": "2487 cc",
+          "gearbox": "Automatic",
+          "bodyType": "Sedan",
+          "fuelType": "Hybrid"
+        },
+        "Innova Hycross": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/toyota/corolla.png",
+          "power": "184 HP",
+          "engineSize": "1987 cc",
+          "gearbox": "Automatic",
+          "bodyType": "MPV",
+          "fuelType": "Hybrid"
+        },
+        "Fortuner": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/toyota/corolla.png",
+          "power": "201 HP",
+          "engineSize": "2755 cc",
+          "gearbox": "Automatic",
+          "bodyType": "SUV",
+          "fuelType": "Diesel"
+        }
+      }
+    },
+
+    {
+      "brand": "Opel",
+      "model": {
+        "Astra": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/opel/astra.png",
+          "power": "130 HP",
+          "engineSize": "1199 cc",
+          "gearbox": "Automatic",
+          "bodyType": "Hatchback",
+          "fuelType": "Gas"
+        },
+        "Insignia": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/opel/astra.png",
+          "power": "200 HP",
+          "engineSize": "1998 cc",
+          "gearbox": "Automatic",
+          "bodyType": "Sedan",
+          "fuelType": "Gas"
+        },
+        "Crossland": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/opel/astra.png",
+          "power": "110 HP",
+          "engineSize": "1199 cc",
+          "gearbox": "Manual",
+          "bodyType": "SUV",
+          "fuelType": "Gas"
+        },
+        "Mokka": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/opel/astra.png",
+          "power": "130 HP",
+          "engineSize": "1199 cc",
+          "gearbox": "Automatic",
+          "bodyType": "SUV",
+          "fuelType": "Gas"
+        }
+      }
+    },
+
+    {
+      "brand": "Nissan",
+      "model": {
+        "Qashqai": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/nissan/qashqai.png",
+          "power": "190 HP",
+          "engineSize": "1497 cc",
+          "gearbox": "Automatic",
+          "bodyType": "SUV",
+          "fuelType": "Hybrid"
+        },
+        "X-Trail": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/nissan/qashqai.png",
+          "power": "201 HP",
+          "engineSize": "1997 cc",
+          "gearbox": "Automatic",
+          "bodyType": "SUV",
+          "fuelType": "Hybrid"
+        },
+        "Sunny": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/nissan/qashqai.png",
+          "power": "99 HP",
+          "engineSize": "1498 cc",
+          "gearbox": "Manual",
+          "bodyType": "Sedan",
+          "fuelType": "Petrol"
+        },
+        "Leaf": {
+          "imageUrl": "https://raw.githubusercontent.com/fbatuhanr/RentaCar-ReactJS/master/src/assets/images/vehicles/nissan/qashqai.png",
+          "power": "147 HP",
+          "engineSize": "Electric",
+          "gearbox": "Automatic",
+          "bodyType": "Hatchback",
+          "fuelType": "Electric"
+        }
+      }
+    }
+  ],
+
+  "bikes": [
+    {
+      "brand": "Hero",
+      "model": {
+        "Splendor": {
+          "imageUrl": "/vehicles/bikes/Hero1.png",
+          "power": "N/A",
+          "engineSize": "100 cc",
+          "gearbox": "N/A",
+          "bodyType": "Regular",
+          "fuelType": "N/A",
+          "year": 2025,
+          "pricePerDay": 500,
+          "bikeCount": 20
+        },
+        "HF-Deluxe": {
+          "imageUrl": "/vehicles/bikes/Hero2.png",
+          "power": "N/A",
+          "engineSize": "100 cc",
+          "gearbox": "N/A",
+          "bodyType": "Regular",
+          "fuelType": "N/A",
+          "year": 2022,
+          "pricePerDay": 550,
+          "bikeCount": 15
+        }
+      }
+    },
+
+    {
+      "brand": "Bajaj",
+      "model": {
+        "Pulsar": {
+          "imageUrl": "/vehicles/bikes/Bajaj1.png",
+          "power": "N/A",
+          "engineSize": "125 cc",
+          "gearbox": "N/A",
+          "bodyType": "Sports",
+          "fuelType": "N/A",
+          "year": 2023,
+          "pricePerDay": 650,
+          "bikeCount": 9
+        },
+        "Dominar": {
+          "imageUrl": "/vehicles/bikes/Bajaj2.png",
+          "power": "N/A",
+          "engineSize": "400 cc",
+          "gearbox": "N/A",
+          "bodyType": "Cruiser",
+          "fuelType": "N/A",
+          "year": 2023,
+          "pricePerDay": 850,
+          "bikeCount": 10
+        }
+      }
+    },
+
+    {
+      "brand": "TVS",
+      "model": {
+        "N-Torq": {
+          "imageUrl": "/vehicles/bikes/TVS1.png",
+          "power": "N/A",
+          "engineSize": "125 cc",
+          "gearbox": "N/A",
+          "bodyType": "Scooty",
+          "fuelType": "N/A",
+          "year": 2022,
+          "pricePerDay": 550,
+          "bikeCount": 20
+        },
+        "Apache": {
+          "imageUrl": "/vehicles/bikes/TVS2.png",
+          "power": "N/A",
+          "engineSize": "160 cc",
+          "gearbox": "N/A",
+          "bodyType": "Sports",
+          "fuelType": "N/A",
+          "year": 2020,
+          "pricePerDay": 650,
+          "bikeCount": 14
+        }
+      }
+    },
+
+    {
+      "brand": "Royal Enfield",
+      "model": {
+        "Bullet": {
+          "imageUrl": "/vehicles/bikes/Royal1.png",
+          "power": "N/A",
+          "engineSize": "300 cc",
+          "gearbox": "N/A",
+          "bodyType": "Cruiser",
+          "fuelType": "N/A",
+          "year": 2020,
+          "pricePerDay": 650,
+          "bikeCount": 15
+        },
+        "Meteor": {
+          "imageUrl": "/vehicles/bikes/Royal2.png",
+          "power": "N/A",
+          "engineSize": "600 cc",
+          "gearbox": "N/A",
+          "bodyType": "Cruiser",
+          "fuelType": "N/A",
+          "year": 2022,
+          "pricePerDay": 1000,
+          "bikeCount": 9
+        }
+      }
+    }
+  ],
+  "locations": [
+    "Mumbai",
+    "Goa",
+    "Delhi",
+    "Lucknow",
+    "Hyderabad",
+    "Kerela",
+    "Noida",
+    "Chandigarh",
+    "Pune",
+    "Gujrat",
+    "Jaisalmer",
+    "Rajasthan",
+    "Guwahati",
+    "Jammu",
+    "Dehradun",
+    "Srinagar",
+    "Kashmir",
+    "Manali",
+    "Shimla",
+    "Leh & Ladakh"
+  ],
+  "customer-reviews": [
+    {
+      "customerImageUrl": "https://img.freepik.com/free-vector/travelers-concept-illustration_114360-2602.jpg",
+      "customerName": "Shivam Bhardwaj",
+      "customerReview": "Renting was much easier than I expected!",
+      "customerStar": 5
+    },
+    {
+      "customerImageUrl": "https://img.freepik.com/premium-vector/tourist-with-suitcase-backpack-hurry-trying-get-his-flight-train-vector-illustration_449384-600.jpg?size=338&ext=jpg&ga=GA1.1.632798143.1705622400&semt=sph",
+      "customerName": "Naman Makkar",
+      "customerReview": "I am very satisfied, I will use 'UrbanCruise' again.",
+      "customerStar": 4
+    },
+    {
+      "customerImageUrl": "https://img.freepik.com/free-vector/trip-concept-illustration_114360-1247.jpg",
+      "customerName": "Om Sarraf",
+      "customerReview": "Great service and friendly staff! Highly recommend.",
+      "customerStar": 5
+    },
+    {
+      "customerImageUrl": "https://static.vecteezy.com/system/resources/previews/007/892/485/original/backpacker-male-and-female-traveler-carrying-a-travel-backpack-thumbs-up-for-hitchhiking-illustration-vector.jpg",
+      "customerName": "Pragati ",
+      "customerReview": "Wide range of vehicles to choose from, very convenient.",
+      "customerStar": 4
+    }
+  ]
+}
