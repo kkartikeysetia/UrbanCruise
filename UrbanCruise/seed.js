@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const admin = require("firebase-admin");
 const serviceAccount = require("./serviceAccount.json"); // your private key
 const data = require("./seed-data"); // the file above

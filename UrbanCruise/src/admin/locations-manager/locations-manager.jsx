@@ -155,7 +155,7 @@ const LocationsManager = () => {
   return (
     <Container fluid className="admin-panel-container">
       {" "}
-      {/* Removed py-5 from here, added to specific elements */}
+      {/* Removed py-5 from here, added to specifi elements */}
       <Row className="justify-content-center">
         <Col xs={12} md={10} lg={8} xl={7}>
           {/* Heading for the page */}
@@ -271,7 +271,7 @@ const LocationsManager = () => {
         </Col>
       </Row>
       {/* Inline CSS for the improved styling */}
-      <style jsx>{`
+      <style>{`
         .admin-panel-container {
           background-color: #212529; /* Dark background like the admin panel */
           min-height: 100vh; /* Ensure it fills the viewport */

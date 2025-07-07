@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // seed-data.js
 // ──────────────────────────────────────────────────────────
 // Numbers → *strings* for Firestore map keys.

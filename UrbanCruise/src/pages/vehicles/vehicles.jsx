@@ -1,12 +1,8 @@
-import React from 'react';
-import CarOffers from '../../components/car-offers';
+import React from "react";
+import CarOffers from "../../components/car-offers";
 
 const Vehicles = () => {
-    return (
-        
-            <CarOffers />
-        
-    );
+  return <CarOffers />;
 };
 
 export default Vehicles;

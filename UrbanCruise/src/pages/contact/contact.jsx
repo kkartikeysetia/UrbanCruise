@@ -1,13 +1,12 @@
-import React from 'react';
+import React from "react";
 
-import ContactSection from '../../components/contact-section';
+import ContactSection from "../../components/contact-section";
 
 const Contact = () => {
-
-    return (
-        <div id='contact'>
-            <ContactSection />
-        </div>
-    );
+  return (
+    <div id="contact">
+      <ContactSection />
+    </div>
+  );
 };
 export default Contact;

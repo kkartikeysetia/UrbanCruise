@@ -5,17 +5,10 @@ import { db, auth } from "../config/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut
+  signOut,
 } from "firebase/auth";
-import {
-  setDoc,
-  doc,
-  getDoc
-} from "firebase/firestore";
-import {
-  clearUserData,
-  setUser
-} from "../redux/features/UserSlice";
+import { setDoc, doc, getDoc } from "firebase/firestore";
+import { clearUserData, setUser } from "../redux/features/UserSlice";
 
 const useAuthentication = () => {
   const dispatch = useDispatch();
@@ -39,7 +32,7 @@ const useAuthentication = () => {
           userUID: user.uid,
           email: email,
           role: "user",
-          name: "Anonymous" // fallback
+          name: "Anonymous", // fallback
         };
         await setDoc(userRef, docData);
       } else {
@@ -50,20 +43,20 @@ const useAuthentication = () => {
         uid: user.uid,
         email: docData.email,
         role: docData.role,
-        name: docData.name || "User"
+        name: docData.name || "User",
       };
 
       dispatch(setUser(userData));
 
       setMessage({
         content: "You are successfully logged in!",
-        isError: false
+        isError: false,
       });
     } catch (err) {
       console.error(err);
       setMessage({
         content: "Incorrect email or password, please try again!",
-        isError: true
+        isError: true,
       });
     } finally {
       setIsLoading(false);
@@ -71,53 +64,64 @@ const useAuthentication = () => {
   };
 
   // ✅ Signup handler
-  const signUpCall = async ({ email, password, role, name, age, mobile, address }) => {
-  setIsLoading(true);
-  try {
-    const { user } = await createUserWithEmailAndPassword(auth, email, password);
+  const signUpCall = async ({
+    email,
+    password,
+    role,
+    name,
+    age,
+    mobile,
+    address,
+  }) => {
+    setIsLoading(true);
+    try {
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-    // Build Firestore doc data
-    const docData = {
-      userUID: user.uid,
-      email,
-      role,
-    };
+      // Build Firestore doc data
+      const docData = {
+        userUID: user.uid,
+        email,
+        role,
+      };
 
-    // Only add user-specific fields if role is 'user'
-    if (role === "user") {
-      docData.name = name;
-      docData.age = age;
-      docData.mobile = mobile;
-      docData.address = address;
+      // Only add user-specific fields if role is 'user'
+      if (role === "user") {
+        docData.name = name;
+        docData.age = age;
+        docData.mobile = mobile;
+        docData.address = address;
+      }
+
+      // Save to Firestore
+      await setDoc(doc(db, "users", user.uid), docData);
+
+      const userData = { ...user, ...docData };
+      dispatch(setUser(userData));
+
+      setMessage({
+        content: "You are successfully signed up!",
+        isError: false,
+      });
+
+      // Optional: redirect after signup based on role
+      navigate(role === "admin" ? "/admin" : "/user");
+
+      return { success: true };
+    } catch (err) {
+      console.error(err);
+      setMessage({
+        content: err.message,
+        isError: true,
+      });
+      return { success: false };
+    } finally {
+      setIsLoading(false);
     }
-
-    // Save to Firestore
-    await setDoc(doc(db, "users", user.uid), docData);
-
-    const userData = { ...user, ...docData };
-    dispatch(setUser(userData));
-
-    setMessage({
-      content: "You are successfully signed up!",
-      isError: false,
-    });
-
-    // Optional: redirect after signup based on role
-    navigate(role === "admin" ? "/admin" : "/user");
-
-    return { success: true };
-  } catch (err) {
-    console.error(err);
-    setMessage({
-      content: err.message,
-      isError: true,
-    });
-    return { success: false };
-  } finally {
-    setIsLoading(false);
-  }
-};
-
+  };
 
   // ✅ Logout handler
   const signOutCall = async () => {
@@ -128,7 +132,7 @@ const useAuthentication = () => {
 
       setMessage({
         content: "You are successfully logged out!",
-        isError: false
+        isError: false,
       });
 
       navigate("/login");
@@ -136,7 +140,7 @@ const useAuthentication = () => {
       console.log(err);
       setMessage({
         content: err.message,
-        isError: true
+        isError: true,
       });
     } finally {
       setIsLoading(false);

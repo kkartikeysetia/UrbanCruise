@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row, Button, Spinner, Form } from "react-bootstrap";
 import { Link, useNavigate, useLocation } from "react-router-dom";

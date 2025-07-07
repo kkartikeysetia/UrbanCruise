@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { useState } from "react";
 import { reviewsData } from "../DATA/data.jsx";
 import { Button, Card, Carousel, Col, Container, Row } from "react-bootstrap";

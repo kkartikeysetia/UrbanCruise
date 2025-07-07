@@ -1,16 +1,16 @@
-import React from 'react';
-import {useSelector} from "react-redux";
-import {Navigate} from "react-router-dom";
+/* eslint-disable react/prop-types */
+import React from "react";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
-const AuthGuard = ({children}) => {
+const AuthGuard = ({ children }) => {
+  const user = useSelector(({ UserSlice }) => UserSlice.user);
 
-    const user = useSelector(({UserSlice}) => UserSlice.user);
+  if (!user.email) {
+    return <Navigate to="/login" />;
+  }
 
-    if(!user.email){
-        return <Navigate to="/login" />
-    }
-
-    return <div>{children}</div>;
+  return <div>{children}</div>;
 };
 
 export default AuthGuard;

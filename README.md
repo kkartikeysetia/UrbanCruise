@@ -131,11 +131,11 @@ To get UrbanCruise up and running on your local machine, follow these steps:
 - **Seeding Data:** You can run the seed script to automatically populate your database with required data for vehicles, locations, and other necessary details.
 - **Importing from JSON:** If you already have the data in JSON format, simply import it to populate your Firestore database.
 
-
-    To do this, you can either use the **Seed Data** or **Import Data from JSON** methods.
+  To do this, you can either use the **Seed Data** or **Import Data from JSON** methods.
 
 5.  **Set up Firebase Security Rules (Crucial for Admin Access):**
-```
+
+````
         - Go to your Firebase Console -> Firestore Database -> Rules tab.
         - Implement the following rules to secure your data and enable admin functionality. **Remember to replace `YOUR_ADMIN_USER_UID` with your actual Firebase User ID for admin access.**
 
@@ -192,7 +192,7 @@ To get UrbanCruise up and running on your local machine, follow these steps:
     }
     }
 
-```
+````
 
 6.  **Razorpay Setup:**
 
@@ -237,5 +237,3 @@ The application should now be running in your browser, typically at `http://loca
 ## 🤝 Contributing
 
 Contributions are welcome! If you have suggestions for improvements or new features, please feel free to open an issue or submit a pull request.
-
-

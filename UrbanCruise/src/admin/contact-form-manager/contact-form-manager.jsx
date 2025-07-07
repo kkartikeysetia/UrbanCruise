@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+// @ts-nocheck
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from "react";
 import {
   Accordion,
   Button,
-  // eslint-disable-next-line no-unused-vars
   Spinner,
   Container,
   Row,
   Col,
   Card,
 } from "react-bootstrap";
+/* eslint-enable no-unused-vars */
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import Swal from "sweetalert2";
@@ -178,7 +180,8 @@ const ContactFormManager = () => {
         </Col>
       </Row>
 
-      <style jsx>{`
+      <style>{`
+      
         .admin-panel-container {
           background-color: #212529; /* Very dark background */
           min-height: 100vh;

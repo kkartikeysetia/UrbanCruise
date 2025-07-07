@@ -32,6 +32,7 @@
     "react-scripts": "^2.1.3",
     "react-select": "^5.10.1",
     "redux-persist": "^6.0.0",
+    "styled-components": "^6.1.19",
     "sweetalert2": "^11.6.13",
     "web-vitals": "^2.1.4"
   },
@@ -58,7 +59,14 @@
     "@babel/core": "^7.27.4",
     "@babel/preset-env": "^7.27.2",
     "@babel/preset-react": "^7.27.1",
+    "eslint": "^8.57.1",
     "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
     "sass": "^1.66.1"
-  }
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact"
+  ]
 }

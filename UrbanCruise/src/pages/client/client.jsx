@@ -1,13 +1,12 @@
-import React from 'react';
+import React from "react";
 
-import CustomerReview from '../../components/customer-reviews';
+import CustomerReview from "../../components/customer-reviews";
 
 const Client = () => {
-
-    return (
-        <div id='client'>
-            <CustomerReview />
-        </div>
-    );
+  return (
+    <div id="client">
+      <CustomerReview />
+    </div>
+  );
 };
 export default Client;

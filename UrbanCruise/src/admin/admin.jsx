@@ -82,8 +82,8 @@ const Admin = () => {
               <div>
                 <h5 className="mb-1">Contact Forms</h5>
                 <small className="text-muted">
-                  Review and respond to inquiries submitted through the
-                  website's contact form.
+                  Review and respond to inquiries submitted through the website
+                  contact form.
                 </small>
               </div>
             </ListGroup.Item>

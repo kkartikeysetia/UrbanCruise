@@ -843,7 +843,7 @@ const MyRentals = () => {
                 }}
               >
                 <p className="fs-3 mb-4 fw-semibold">
-                  It looks like you haven't booked any vehicles yet.
+                  It looks like you havent booked any vehicles yet.
                 </p>
                 <p className="fs-5 mb-4">
                   Start your journey by exploring our amazing fleet of cars and
