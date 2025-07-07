@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useContext, useEffect } from "react";
 import { Container, Row, Col, Carousel, Button } from "react-bootstrap";
 import { GrNext, GrPrevious } from "react-icons/gr";
@@ -18,7 +19,8 @@ const slides = [
   {
     image: "/car.jpg",
     title: "Drive in Style",
-    tagline: "Your journey, your rules – explore with our luxury and economical cars.",
+    tagline:
+      "Your journey, your rules – explore with our luxury and economical cars.",
     buttonText: "Explore Cars",
     bgClass: "slide-dark",
   },
@@ -41,20 +43,26 @@ const Slider = () => {
   };
 
   const onPrevClick = () => {
-    setIndex((prevIndex) => (prevIndex === 0 ? slides.length - 1 : prevIndex - 1));
+    setIndex((prevIndex) =>
+      prevIndex === 0 ? slides.length - 1 : prevIndex - 1
+    );
   };
 
   const onNextClick = () => {
-    setIndex((prevIndex) => (prevIndex === slides.length - 1 ? 0 : prevIndex + 1));
+    setIndex((prevIndex) =>
+      prevIndex === slides.length - 1 ? 0 : prevIndex + 1
+    );
   };
-
+  // eslint-disable-next-line no-unused-vars
   const isDark = theme === "dark";
 
   return (
     <div id="slider">
       <Container>
         <Row className="justify-content-center">
-          <Col lg={11}> {/* Increased column size for more visual impact */}
+          <Col lg={11}>
+            {" "}
+            {/* Increased column size for more visual impact */}
             <Carousel
               activeIndex={index}
               onSelect={handleSelect}
@@ -96,19 +104,14 @@ const Slider = () => {
                 </Carousel.Item>
               ))}
             </Carousel>
-
             {/* Custom Arrows below slider */}
-            <div className="d-flex justify-content-center gap-3 mt-5"> {/* Increased margin-top */}
-              <Button
-                onClick={onPrevClick}
-                className="arrow-button"
-              >
+            <div className="d-flex justify-content-center gap-3 mt-5">
+              {" "}
+              {/* Increased margin-top */}
+              <Button onClick={onPrevClick} className="arrow-button">
                 <GrPrevious />
               </Button>
-              <Button
-                onClick={onNextClick}
-                className="arrow-button"
-              >
+              <Button onClick={onNextClick} className="arrow-button">
                 <GrNext />
               </Button>
             </div>

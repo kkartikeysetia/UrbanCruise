@@ -9,6 +9,7 @@ import {
   Card,
   Spinner,
 } from "react-bootstrap";
+// eslint-disable-next-line no-unused-vars
 import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import Swal from "sweetalert2";

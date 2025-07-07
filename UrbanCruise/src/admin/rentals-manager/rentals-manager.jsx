@@ -30,6 +30,7 @@ import {
   FaUser,
   FaCalendarAlt,
   FaMapMarkerAlt,
+  // eslint-disable-next-line no-unused-vars
   FaDollarSign,
   FaTrashAlt,
   FaMotorcycle,

@@ -33,6 +33,7 @@ import { db } from "../config/firebase";
 import { useTheme } from "../context/ThemeContext";
 
 const VehicleDetail = () => {
+  // eslint-disable-next-line no-unused-vars
   const dispatch = useDispatch();
   const user = useSelector(({ UserSlice }) => UserSlice.user);
   const { theme } = useTheme();

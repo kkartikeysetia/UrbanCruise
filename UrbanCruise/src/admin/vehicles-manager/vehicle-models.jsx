@@ -10,6 +10,7 @@ import {
   Col,
   ListGroup,
 } from "react-bootstrap";
+// eslint-disable-next-line no-unused-vars
 import { doc, setDoc, getDoc } from "firebase/firestore"; // getDoc is needed for fetchBrands/Models within useFetchData.js
 import { db } from "../../config/firebase";
 import Swal from "sweetalert2";

@@ -1,4 +1,5 @@
 import React, { useState } from "react"; // Import useState
+// eslint-disable-next-line no-unused-vars
 import { useNavigate, Link, NavLink, useLocation } from "react-router-dom";
 import {
   Container,
@@ -13,10 +14,13 @@ import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
 // Icons
+// eslint-disable-next-line no-unused-vars
 import { FiMapPin, FiPhone, FiMail } from "react-icons/fi";
 import { LiaCarSideSolid, LiaHandsHelpingSolid } from "react-icons/lia";
 import { FaUser, FaUserPlus } from "react-icons/fa";
+// eslint-disable-next-line no-unused-vars
 import { MdAdminPanelSettings } from "react-icons/md";
+// eslint-disable-next-line no-unused-vars
 import { IoIosArrowDown } from "react-icons/io";
 
 import useAuthentication from "../hooks/useAuthentication";
