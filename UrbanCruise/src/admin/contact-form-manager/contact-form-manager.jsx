@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   Button,
@@ -85,6 +85,7 @@ const ContactFormManager = () => {
     <Container fluid className="admin-panel-container py-5">
       <Row className="justify-content-center">
         <Col xs={12} md={10} lg={9} xl={8}>
+          {/* Page Heading - Moved outside the conditional loading block */}
           <h1 className="mb-4 text-center admin-panel-heading">
             Contact Form Management
           </h1>
