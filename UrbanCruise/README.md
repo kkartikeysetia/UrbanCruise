@@ -2,7 +2,7 @@
 
 UrbanCruise transforms the way you explore cities—offering secure user registration, lightning-fast vehicle browsing, and a crystal-clear booking flow right at your fingertips. Enjoy responsive, device-friendly design, hassle-free checkouts with multiple payment options, and a handy history of all your past rentals. Ready to hit the road? 🌟
 
-🚀 **Live Demo:** https://your-live-demo-link.com
+🚀 **Live Demo:** [https://your-live-demo-link.com](https://urban-cruisekartikey.vercel.app/)
 
 ---
 
