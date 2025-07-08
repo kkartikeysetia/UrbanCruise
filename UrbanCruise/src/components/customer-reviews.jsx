@@ -2,283 +2,412 @@
 import React, { useState } from "react";
 import { reviewsData } from "../DATA/data.jsx";
 import { Button, Card, Carousel, Col, Container, Row } from "react-bootstrap";
-import { GrNext, GrPrevious } from "react-icons/gr";
-import { AiFillStar } from "react-icons/ai";
-import { useTheme } from "../context/ThemeContext"; // Import the useTheme hook
+import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
 
 const CustomerReview = () => {
-  const { theme } = useTheme(); // Use the theme from context
+  const { theme } = useTheme();
   const isDark = theme === "dark";
 
   const [index, setIndex] = useState(0);
+
+  // Group reviews in pairs for display
+  const groupedReviews = [];
+  for (let i = 0; i < reviewsData.length; i += 2) {
+    groupedReviews.push(reviewsData.slice(i, i + 2));
+  }
+
+  const totalSlides = groupedReviews.length;
 
   const handleSelect = (selectedIndex) => {
     setIndex(selectedIndex);
   };
 
-  // Adjusting navigation logic for correct index calculation with pairs
-  const totalSlides = Math.ceil(reviewsData.length / 2);
-
   const onPrevClick = () => {
-    setIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
+    const newIndex = index === 0 ? totalSlides - 1 : index - 1;
+    setIndex(newIndex);
   };
 
   const onNextClick = () => {
-    setIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
+    const newIndex = index === totalSlides - 1 ? 0 : index + 1;
+    setIndex(newIndex);
   };
-
-  // Define comprehensive UI colors based on the theme
-  const uiColors = {
-    sectionBg: isDark ? "#0A0A0A" : "#F8F8F8",
-    // Heading colors (consistent with CarSearch and FeaturesSection)
-    headingPrimary: isDark ? "#E0E6F0" : "#1A202C",
-    headingSecondary: isDark ? "#AABBCD" : "#4A5568",
-    headingGradientStart: "#6A11CB", // Deep Violet
-    headingGradientEnd: "#2575FC", // Bright Blue
-
-    cardBg: isDark ? "#1C1C1C" : "#FFFFFF", // Background of each review card
-    cardBorder: isDark ? "1px solid #333333" : "1px solid #E0E0E0", // Border of each review card
-    cardShadow: isDark
-      ? "0 5px 15px rgba(0,0,0,0.4)"
-      : "0 5px 15px rgba(0,0,0,0.1)", // Card shadow
-    cardHoverShadow: isDark
-      ? "0 10px 25px rgba(32, 201, 151, 0.2), 0 0 15px rgba(32, 201, 151, 0.1)"
-      : "0 10px 25px rgba(0,0,0,0.2)", // Card hover shadow
-
-    customerNameColor: isDark ? "#ADD8E6" : "#333333", // Color for customer names
-    reviewTextColor: isDark ? "#E0E0E0" : "#555555", // Color for review text
-    starColor: "#f5b50a", // Consistent star color
-
-    // Carousel Navigation Button Colors
-    navButtonBg: isDark ? "#2A2A2A" : "#EAF4FF", // Subtle background for buttons
-    navButtonBorder: isDark ? "1px solid #444444" : "1px solid #D0D0D0",
-    navButtonIconColor: isDark ? "#20C997" : "#007bff", // Accent color for icons
-    navButtonHoverBg: isDark ? "#3A3A3A" : "#DDEEFF",
-    navButtonHoverShadow: isDark
-      ? "0 0 10px rgba(32, 201, 151, 0.3)"
-      : "0 0 10px rgba(0, 123, 255, 0.2)",
-
-    transition: "all 0.3s ease-in-out",
-  };
-
-  // Prepare carousel items in pairs
-  const resultsRender = [];
-  for (let i = 0; i < reviewsData.length; i += 2) {
-    resultsRender.push(
-      <Carousel.Item key={`review_carousel_${i}`} interval={99999}>
-        <Row className="g-4 px-2 justify-content-center">
-          {reviewsData.slice(i, i + 2).map((review, idx) => (
-            <Col xs={12} md={6} key={`review_${i + idx}`}>
-              <Card
-                className="h-100 p-3 rounded-4"
-                style={{
-                  backgroundColor: uiColors.cardBg,
-                  border: uiColors.cardBorder,
-                  color: uiColors.reviewTextColor,
-                  boxShadow: uiColors.cardShadow,
-                  transition: uiColors.transition,
-                }}
-              >
-                <Card.Body className="d-flex flex-column align-items-center text-center">
-                  <div
-                    className="mb-3 rounded-circle overflow-hidden d-flex align-items-center justify-content-center"
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      border: `3px solid ${uiColors.navButtonIconColor}`,
-                      boxShadow: isDark
-                        ? "0 0 15px rgba(32, 201, 151, 0.4)"
-                        : "0 0 15px rgba(0, 123, 255, 0.2)",
-                      backgroundColor: isDark ? "#222" : "#F0F0F0",
-                    }}
-                  >
-                    <Card.Img
-                      variant="top"
-                      src={review.customerImageUrl}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                      alt={review.customerName}
-                    />
-                  </div>
-
-                  <Card.Title
-                    className="fw-bold mb-2"
-                    style={{
-                      color: uiColors.customerNameColor,
-                      fontSize: "1.4rem",
-                    }}
-                  >
-                    {review.customerName}
-                  </Card.Title>
-                  <Card.Text
-                    className="mb-3"
-                    style={{
-                      color: uiColors.reviewTextColor,
-                      lineHeight: "1.6",
-                    }}
-                  >
-                    "{review.customerReview}"
-                  </Card.Text>
-                  <div className="review-star d-flex justify-content-center align-items-center gap-1">
-                    {Array.from({ length: review.customerStar }).map(
-                      (_, starIdx) => (
-                        <AiFillStar
-                          key={`star_${starIdx}`}
-                          size={20}
-                          color={uiColors.starColor}
-                        />
-                      )
-                    )}
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </Carousel.Item>
-    );
-  }
 
   return (
     <div
       id="customer-reviews"
-      className="py-6"
+      className="py-5"
       style={{
-        backgroundColor: uiColors.sectionBg,
-        transition: uiColors.transition,
+        backgroundColor: isDark ? "#0A0A0A" : "#FAFAFA",
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
       }}
     >
-      <Container>
+      <Container className="py-5">
         {/* Heading Section */}
-        <Row
-          className="justify-content-center mb-5"
-          style={{
-            marginTop: "2rem", // Added margin-top to push the heading down
-          }}
-        >
-          <Col lg={8} className="text-center">
-            <h1
-              className="p-0 fw-extrabold mb-3"
-              style={{
-                fontFamily: '"Poppins", sans-serif',
-                fontSize: "3.2rem",
-                lineHeight: "1.2",
-                letterSpacing: "0.02em",
-                color: isDark ? uiColors.headingPrimary : "inherit",
-                background: !isDark
-                  ? `linear-gradient(90deg, ${uiColors.headingGradientStart}, ${uiColors.headingGradientEnd})`
-                  : "none",
-                WebkitBackgroundClip: !isDark ? "text" : "unset",
-                WebkitTextFillColor: !isDark ? "transparent" : "inherit",
-                textShadow: isDark
-                  ? "0 0 15px rgba(224, 230, 240, 0.3)"
-                  : "2px 2px 5px rgba(0,0,0,0.15)",
-                transition: uiColors.transition,
-                textTransform: "uppercase",
-              }}
-            >
-              <span style={{ display: "block" }}>What Our</span>
+        <Row className="justify-content-center mb-5">
+          <Col lg={10} className="text-center">
+            <div className="mb-3">
               <span
+                className="badge rounded-pill px-4 py-2 mb-4 d-inline-block"
                 style={{
-                  display: "block",
-                  whiteSpace: "nowrap",
-                  marginTop: "-0.1em",
+                  backgroundColor: isDark ? "#1F2937" : "#F3F4F6",
+                  color: isDark ? "#9CA3AF" : "#6B7280",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.1em",
                 }}
               >
-                CUSTOMERS SAY
+                Testimonials
+              </span>
+            </div>
+            <h1
+              className="display-4 fw-bold mb-4"
+              style={{
+                color: isDark ? "#F9FAFB" : "#111827",
+                lineHeight: "1.1",
+                fontWeight: "800",
+              }}
+            >
+              What Our{" "}
+              <span
+                style={{
+                  background: isDark
+                    ? "linear-gradient(135deg, #3B82F6, #1D4ED8)"
+                    : "linear-gradient(135deg, #2563EB, #1D4ED8)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                Customers Say
               </span>
             </h1>
             <p
-              className="fs-5 mb-0"
+              className="lead"
               style={{
-                fontFamily: '"Roboto", sans-serif',
-                color: uiColors.headingSecondary,
-                lineHeight: "1.6",
+                color: isDark ? "#9CA3AF" : "#6B7280",
+                fontSize: "1.25rem",
                 maxWidth: "700px",
                 margin: "0 auto",
-                transition: uiColors.transition,
-                fontWeight: "400",
+                lineHeight: "1.6",
               }}
             >
-              Hear directly from our satisfied clients about their{" "}
-              <span style={{ fontWeight: "600" }}>UrbanCruise</span> experience.
+              Hear directly from our satisfied clients about their UrbanCruise
+              experience.
             </p>
           </Col>
         </Row>
 
-        <Row className="justify-content-center align-items-center">
-          <Col xs="auto" className="d-none d-md-block">
-            <Button
-              onClick={onPrevClick}
-              className="rounded-circle d-flex align-items-center justify-content-center"
-              style={{
-                width: "50px",
-                height: "50px",
-                backgroundColor: uiColors.navButtonBg,
-                border: uiColors.navButtonBorder,
-                transition: uiColors.transition,
-                boxShadow: uiColors.cardShadow,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor =
-                  uiColors.navButtonHoverBg;
-                e.currentTarget.style.boxShadow = uiColors.navButtonHoverShadow;
-                e.currentTarget.style.transform = "scale(1.05)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = uiColors.navButtonBg;
-                e.currentTarget.style.boxShadow = uiColors.cardShadow;
-                e.currentTarget.style.transform = "scale(1)";
-              }}
-            >
-              <GrPrevious
-                size={24}
-                style={{ color: uiColors.navButtonIconColor }}
-              />
-            </Button>
+        {/* Reviews Carousel */}
+        <Row className="justify-content-center">
+          <Col lg={11} xl={10}>
+            <div className="position-relative">
+              <Carousel
+                activeIndex={index}
+                onSelect={handleSelect}
+                controls={false}
+                indicators={false}
+                interval={5000}
+                pause="hover"
+                wrap={true}
+                className="testimonial-carousel"
+                style={{ overflow: "hidden" }}
+              >
+                {groupedReviews.map((reviewPair, slideIndex) => (
+                  <Carousel.Item key={slideIndex}>
+                    <Row className="g-4 justify-content-center">
+                      {reviewPair.map((review, reviewIndex) => (
+                        <Col
+                          key={reviewIndex}
+                          xs={12}
+                          md={6}
+                          className="d-flex"
+                        >
+                          <Card
+                            className="h-100 border-0 w-100 position-relative overflow-hidden"
+                            style={{
+                              backgroundColor: isDark ? "#1F2937" : "#FFFFFF",
+                              borderRadius: "24px",
+                              boxShadow: isDark
+                                ? "0 25px 50px -12px rgba(0, 0, 0, 0.5)"
+                                : "0 25px 50px -12px rgba(0, 0, 0, 0.1)",
+                              transition: "all 0.3s ease",
+                            }}
+                          >
+                            {/* Gradient overlay */}
+                            <div
+                              className="position-absolute top-0 start-0 w-100 h-100"
+                              style={{
+                                background: isDark
+                                  ? "linear-gradient(135deg, #3B82F620, transparent)"
+                                  : "linear-gradient(135deg, #2563EB10, transparent)",
+                                zIndex: 1,
+                              }}
+                            />
+
+                            <Card.Body
+                              className="p-4 p-lg-5 position-relative"
+                              style={{ zIndex: 2 }}
+                            >
+                              {/* Quote Icon */}
+                              <div className="mb-4">
+                                <div
+                                  className="d-inline-flex align-items-center justify-content-center"
+                                  style={{
+                                    width: "60px",
+                                    height: "60px",
+                                    borderRadius: "16px",
+                                    background: isDark
+                                      ? "linear-gradient(135deg, #3B82F6, #1D4ED8)"
+                                      : "linear-gradient(135deg, #2563EB, #1D4ED8)",
+                                    boxShadow: isDark
+                                      ? "0 15px 35px #3B82F630"
+                                      : "0 15px 35px #2563EB30",
+                                  }}
+                                >
+                                  <Quote size={24} color="#FFFFFF" />
+                                </div>
+                              </div>
+
+                              {/* Star Rating */}
+                              <div className="mb-3 d-flex gap-1">
+                                {[...Array(review.customerStar || 5)].map(
+                                  (_, i) => (
+                                    <Star
+                                      key={i}
+                                      size={20}
+                                      fill="#FCD34D"
+                                      color="#FCD34D"
+                                    />
+                                  )
+                                )}
+                              </div>
+
+                              {/* Review Text */}
+                              <blockquote
+                                className="mb-4"
+                                style={{
+                                  fontSize: "1.125rem",
+                                  lineHeight: "1.7",
+                                  color: isDark ? "#E5E7EB" : "#374151",
+                                  fontStyle: "italic",
+                                  margin: "0",
+                                }}
+                              >
+                                "{review.review}"
+                              </blockquote>
+
+                              {/* Customer Info */}
+                              <div className="d-flex align-items-center gap-3">
+                                <div
+                                  className="rounded-circle overflow-hidden flex-shrink-0"
+                                  style={{
+                                    width: "56px",
+                                    height: "56px",
+                                    border: `3px solid ${
+                                      isDark ? "#374151" : "#E5E7EB"
+                                    }`,
+                                  }}
+                                >
+                                  <img
+                                    src={review.image}
+                                    alt={review.name}
+                                    className="w-100 h-100"
+                                    style={{
+                                      objectFit: "cover",
+                                      objectPosition: "center",
+                                    }}
+                                    onError={(e) => {
+                                      e.target.src =
+                                        "https://via.placeholder.com/56x56/3B82F6/FFFFFF?text=" +
+                                        review.name.charAt(0);
+                                    }}
+                                  />
+                                </div>
+                                <div>
+                                  <h5
+                                    className="mb-1 fw-bold"
+                                    style={{
+                                      color: isDark ? "#F9FAFB" : "#111827",
+                                      fontSize: "1.1rem",
+                                    }}
+                                  >
+                                    {review.name}
+                                  </h5>
+                                  <p
+                                    className="mb-0"
+                                    style={{
+                                      color: isDark ? "#9CA3AF" : "#6B7280",
+                                      fontSize: "0.875rem",
+                                    }}
+                                  >
+                                    Verified Customer
+                                  </p>
+                                </div>
+                              </div>
+                            </Card.Body>
+                          </Card>
+                        </Col>
+                      ))}
+                    </Row>
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+
+              {/* Custom Navigation Buttons */}
+              {totalSlides > 1 && (
+                <>
+                  <Button
+                    onClick={onPrevClick}
+                    className="position-absolute top-50 start-0 translate-middle-y border-0 rounded-circle d-flex align-items-center justify-content-center"
+                    style={{
+                      width: "56px",
+                      height: "56px",
+                      backgroundColor: isDark ? "#1F2937" : "#FFFFFF",
+                      color: isDark ? "#E5E7EB" : "#374151",
+                      boxShadow: isDark
+                        ? "0 15px 35px rgba(0, 0, 0, 0.3)"
+                        : "0 15px 35px rgba(0, 0, 0, 0.1)",
+                      transform: "translateX(-50%) translateY(-50%)",
+                      left: "-28px",
+                      transition: "all 0.3s ease",
+                      backdropFilter: "blur(10px)",
+                      border: `1px solid ${isDark ? "#374151" : "#E5E7EB"}`,
+                      zIndex: 10,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = isDark
+                        ? "#374151"
+                        : "#F3F4F6";
+                      e.target.style.transform =
+                        "translateX(-50%) translateY(-50%) scale(1.1)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = isDark
+                        ? "#1F2937"
+                        : "#FFFFFF";
+                      e.target.style.transform =
+                        "translateX(-50%) translateY(-50%) scale(1)";
+                    }}
+                  >
+                    <ChevronLeft size={24} strokeWidth={2} />
+                  </Button>
+
+                  <Button
+                    onClick={onNextClick}
+                    className="position-absolute top-50 end-0 translate-middle-y border-0 rounded-circle d-flex align-items-center justify-content-center"
+                    style={{
+                      width: "56px",
+                      height: "56px",
+                      backgroundColor: isDark ? "#1F2937" : "#FFFFFF",
+                      color: isDark ? "#E5E7EB" : "#374151",
+                      boxShadow: isDark
+                        ? "0 15px 35px rgba(0, 0, 0, 0.3)"
+                        : "0 15px 35px rgba(0, 0, 0, 0.1)",
+                      transform: "translateX(50%) translateY(-50%)",
+                      right: "-28px",
+                      transition: "all 0.3s ease",
+                      backdropFilter: "blur(10px)",
+                      border: `1px solid ${isDark ? "#374151" : "#E5E7EB"}`,
+                      zIndex: 10,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = isDark
+                        ? "#374151"
+                        : "#F3F4F6";
+                      e.target.style.transform =
+                        "translateX(50%) translateY(-50%) scale(1.1)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = isDark
+                        ? "#1F2937"
+                        : "#FFFFFF";
+                      e.target.style.transform =
+                        "translateX(50%) translateY(-50%) scale(1)";
+                    }}
+                  >
+                    <ChevronRight size={24} strokeWidth={2} />
+                  </Button>
+                </>
+              )}
+
+              {/* Dots Indicator */}
+              {totalSlides > 1 && (
+                <div className="d-flex justify-content-center mt-4 gap-2">
+                  {groupedReviews.map((_, slideIndex) => (
+                    <button
+                      key={slideIndex}
+                      onClick={() => setIndex(slideIndex)}
+                      className="border-0 rounded-pill"
+                      style={{
+                        width: index === slideIndex ? "32px" : "12px",
+                        height: "12px",
+                        backgroundColor:
+                          index === slideIndex
+                            ? isDark
+                              ? "#3B82F6"
+                              : "#2563EB"
+                            : isDark
+                            ? "#374151"
+                            : "#D1D5DB",
+                        transition: "all 0.3s ease",
+                        cursor: "pointer",
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
           </Col>
-          <Col xs={12} md={8}>
-            <Carousel
-              activeIndex={index}
-              onSelect={handleSelect}
-              indicators={false}
-              controls={false}
-            >
-              {resultsRender}
-            </Carousel>
-          </Col>
-          <Col xs="auto" className="d-none d-md-block">
-            <Button
-              onClick={onNextClick}
-              className="rounded-circle d-flex align-items-center justify-content-center"
-              style={{
-                width: "50px",
-                height: "50px",
-                backgroundColor: uiColors.navButtonBg,
-                border: uiColors.navButtonBorder,
-                transition: uiColors.transition,
-                boxShadow: uiColors.cardShadow,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor =
-                  uiColors.navButtonHoverBg;
-                e.currentTarget.style.boxShadow = uiColors.navButtonHoverShadow;
-                e.currentTarget.style.transform = "scale(1.05)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = uiColors.navButtonBg;
-                e.currentTarget.style.boxShadow = uiColors.cardShadow;
-                e.currentTarget.style.transform = "scale(1)";
-              }}
-            >
-              <GrNext
-                size={24}
-                style={{ color: uiColors.navButtonIconColor }}
-              />
-            </Button>
+        </Row>
+
+        {/* Bottom Stats Section */}
+        <Row className="justify-content-center mt-5 pt-4">
+          <Col lg={8}>
+            <Row className="g-4 text-center">
+              {[
+                { number: "10,000+", label: "Happy Customers" },
+                { number: "4.9/5", label: "Average Rating" },
+                { number: "99%", label: "Satisfaction Rate" },
+              ].map((stat, statIndex) => (
+                <Col xs={4} key={statIndex}>
+                  <div
+                    className="p-3 rounded-3"
+                    style={{
+                      background: isDark
+                        ? "linear-gradient(135deg, #1F2937, #111827)"
+                        : "linear-gradient(135deg, #F3F4F6, #E5E7EB)",
+                      border: isDark
+                        ? "1px solid #374151"
+                        : "1px solid #D1D5DB",
+                    }}
+                  >
+                    <h3
+                      className="mb-1 fw-bold"
+                      style={{
+                        color: isDark ? "#3B82F6" : "#2563EB",
+                        fontSize: "1.5rem",
+                      }}
+                    >
+                      {stat.number}
+                    </h3>
+                    <p
+                      className="mb-0"
+                      style={{
+                        color: isDark ? "#9CA3AF" : "#6B7280",
+                        fontSize: "0.875rem",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {stat.label}
+                    </p>
+                  </div>
+                </Col>
+              ))}
+            </Row>
           </Col>
         </Row>
       </Container>
