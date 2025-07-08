@@ -328,27 +328,63 @@
   ],
   "customer-reviews": [
     {
-      "customerImageUrl": "https://img.freepik.com/free-vector/travelers-concept-illustration_114360-2602.jpg",
-      "customerName": "Shivam Bhardwaj",
-      "customerReview": "Renting was much easier than I expected!",
+      "image": "/assets/images/reviews/customer-1.jpg",
+      "name": "Shivam Bhardwaj",
+      "review": "Renting was much easier than I expected! The whole process was seamless and the vehicle was in perfect condition.",
       "customerStar": 5
     },
     {
-      "customerImageUrl": "https://img.freepik.com/premium-vector/tourist-with-suitcase-backpack-hurry-trying-get-his-flight-train-vector-illustration_449384-600.jpg?size=338&ext=jpg&ga=GA1.1.632798143.1705622400&semt=sph",
-      "customerName": "Naman Makkar",
-      "customerReview": "I am very satisfied, I will use 'UrbanCruise' again.",
+      "image": "/assets/images/reviews/customer-2.jpg",
+      "name": "Naman Makkar",
+      "review": "I am very satisfied, I will use 'UrbanCruise' again. Great customer service and competitive pricing!",
+      "customerStar": 5
+    },
+    {
+      "image": "/assets/images/reviews/customer-3.jpg",
+      "name": "Priya Sharma",
+      "review": "Outstanding experience! The booking was super quick and the car was exactly as described. Highly recommend!",
+      "customerStar": 5
+    },
+    {
+      "image": "/assets/images/reviews/customer-4.jpg",
+      "name": "Rajesh Kumar",
+      "review": "Amazing service! Clean vehicles, professional staff, and transparent pricing. Will definitely book again for my next trip.",
+      "customerStar": 5
+    },
+    {
+      "image": "/assets/images/reviews/customeer-11.jpg",
+      "name": "Ananya Gupta",
+      "review": "Best rental experience ever! The app is user-friendly and the pickup process was incredibly smooth. Five stars!",
+      "customerStar": 5
+    },
+    {
+      "image": "/assets/images/reviews/customer-1.jpg",
+      "name": "Vikram Singh",
+      "review": "Exceptional quality and service. The vehicle was spotless and fuel-efficient. Perfect for my weekend getaway!",
+      "customerStar": 5
+    },
+    {
+      "image": "/assets/images/reviews/customer-2.jpg",
+      "name": "Meena Devi",
+      "review": "Fantastic experience from start to finish. Quick booking, easy pickup, and hassle-free return. Loved it!",
+      "customerStar": 5
+    },
+    {
+      "image": "/assets/images/reviews/customer-3.jpg",
+      "name": "Arjun Reddy",
+      "review": "Great value for money! Wide selection of vehicles and excellent customer support. Couldn't ask for more.",
       "customerStar": 4
     },
     {
-      "customerImageUrl": "https://img.freepik.com/free-vector/trip-concept-illustration_114360-1247.jpg",
-      "customerName": "Om Sarraf",
-      "customerReview": "Great service and friendly staff! Highly recommend.",
+      "image": "/assets/images/reviews/customer-4.jpg",
+      "name": "Kavya Patel",
+      "review": "Professional service and well-maintained vehicles. The staff was helpful and made the entire process effortless.",
       "customerStar": 5
     },
     {
-      "customerImageUrl": "https://static.vecteezy.com/system/resources/previews/007/892/485/original/backpacker-male-and-female-traveler-carrying-a-travel-backpack-thumbs-up-for-hitchhiking-illustration-vector.jpg",
-      "customerName": "Pragati ",
-      "customerReview": "Wide range of vehicles to choose from, very convenient.",
+      "image": "/assets/images/reviews/customeer-11.jpg",
+      "name": "Rohit Agarwal",
+      "review": "Smooth booking experience and reliable service. The car was delivered on time and in excellent condition.",
       "customerStar": 4
     }
   ]

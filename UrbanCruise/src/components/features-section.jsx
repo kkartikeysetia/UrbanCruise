@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
-import { AiOutlineSafety } from "react-icons/ai";
-import { HiOutlineStatusOnline } from "react-icons/hi";
-import { BiSolidOffer } from "react-icons/bi";
+import { Shield, Clock, TrendingDown, ChevronRight } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 
 const FeaturesSection = () => {
@@ -11,197 +9,265 @@ const FeaturesSection = () => {
 
   const [hoveredFeature, setHoveredFeature] = useState(null);
 
-  const uiColors = {
-    sectionBg: isDark ? "#0A0A0A" : "#F8F8F8",
-    // Keep these general heading colors, but override for the specific parts below
-    headingPrimary: isDark ? "#E0E6F0" : "#1A202C",
-    headingSecondary: isDark ? "#AABBCD" : "#4A5568",
-    headingGradientStart: "#6A11CB",
-    headingGradientEnd: "#2575FC",
-
-    // Specific colors for the heading parts
-    whyChooseColor: isDark ? "#AABBCD" : "#4A5568", // A softer, subtle color for "Why Choose"
-    appColor: "#20C997",
-
-    cardBg: isDark ? "#1C1C1C" : "#FFFFFF",
-    cardBorder: isDark ? "1px solid #333333" : "1px solid #E0E0E0",
-    cardShadow: isDark
-      ? "0 5px 15px rgba(0,0,0,0.4)"
-      : "0 5px 15px rgba(0,0,0,0.1)",
-    cardHoverShadow: isDark
-      ? "0 10px 25px rgba(32, 201, 151, 0.2), 0 0 15px rgba(32, 201, 151, 0.1)"
-      : "0 10px 25px rgba(0,0,0,0.2)",
-
-    iconContainerBg: isDark
-      ? "linear-gradient(135deg, #20C997, #1AA07B)"
-      : "linear-gradient(135deg, #007bff, #0056b3)",
-    iconColor: "#FFFFFF",
-    iconShadow: isDark
-      ? "0 0 20px rgba(32, 201, 151, 0.6)"
-      : "0 0 20px rgba(0, 123, 255, 0.4)",
-
-    featureTitleColor: isDark ? "#ADD8E6" : "#333333",
-    textColor: isDark ? "#E0E0E0" : "#555555",
-
-    transition: "all 0.3s ease-in-out",
-  };
-
   const features = [
     {
       id: "safety",
-      icon: <AiOutlineSafety size="2.5em" />,
+      icon: Shield,
       title: "Reliable & Secure",
       description:
         "UrbanCruise ensures your journey is safe and secure with meticulously verified vehicles and smart tracking features.",
+      color: isDark ? "#10B981" : "#059669",
+      bgGradient: "from-emerald-500 to-green-600",
     },
     {
       id: "booking",
-      icon: <HiOutlineStatusOnline size="2.5em" />,
+      icon: Clock,
       title: "Instant Online Booking",
       description:
         "Book your ideal ride anytime, anywhere with our seamless 24/7 online booking system and intuitive interface.",
+      color: isDark ? "#3B82F6" : "#2563EB",
+      bgGradient: "from-blue-500 to-indigo-600",
     },
     {
       id: "offers",
-      icon: <BiSolidOffer size="2.5em" />,
+      icon: TrendingDown,
       title: "Unbeatable Offers",
       description:
         "Access competitive pricing, exclusive member deals, and unparalleled value for every adventure you plan.",
+      color: isDark ? "#F59E0B" : "#D97706",
+      bgGradient: "from-amber-500 to-orange-600",
     },
   ];
 
   return (
     <div
       id="features-section"
-      className="py-6"
+      className="py-5"
       style={{
-        backgroundColor: uiColors.sectionBg,
-        transition: uiColors.transition,
+        backgroundColor: isDark ? "#0A0A0A" : "#FAFAFA",
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
       }}
     >
-      <Container>
+      <Container className="py-5">
         {/* Heading Section */}
         <Row className="justify-content-center mb-5">
-          <Col lg={8} className="text-center">
+          <Col lg={10} className="text-center">
+            <div className="mb-3">
+              <span
+                className="badge rounded-pill px-4 py-2 mb-4 d-inline-block"
+                style={{
+                  backgroundColor: isDark ? "#1F2937" : "#F3F4F6",
+                  color: isDark ? "#9CA3AF" : "#6B7280",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.1em",
+                }}
+              >
+                Why Choose Us
+              </span>
+            </div>
             <h1
-              className="p-0 fw-extrabold mb-3"
+              className="display-4 fw-bold mb-4"
               style={{
-                fontFamily: '"Poppins", sans-serif',
-                fontSize: "3.8rem",
-                lineHeight: "1.05",
-                letterSpacing: "0.05em",
-                textShadow: isDark
-                  ? "0 0 15px rgba(32, 201, 151, 0.6), 0 0 25px rgba(32, 201, 151, 0.4)"
-                  : "0 0 10px rgba(106, 17, 203, 0.3), 0 0 20px rgba(37, 117, 252, 0.2)", // Accent shadows for light mode
-                transition: uiColors.transition,
-                textTransform: "uppercase", // This will make "Why Choose" uppercase
+                color: isDark ? "#F9FAFB" : "#111827",
+                lineHeight: "1.1",
+                fontWeight: "800",
               }}
             >
-              <span
-                style={{ display: "block", color: uiColors.whyChooseColor }}
-              >
-                Why Choose
-              </span>
+              Why Choose{" "}
               <span
                 style={{
-                  display: "block",
-                  whiteSpace: "nowrap",
-                  marginTop: "-0.1em",
-                  color: uiColors.appColor, // Apply the green color
-                  // Add subtle shadow to the green text
-                  textShadow: isDark
-                    ? "0 0 10px rgba(32, 201, 151, 0.8), 0 0 20px rgba(32, 201, 151, 0.6)"
-                    : "0 0 8px rgba(32, 201, 151, 0.5), 0 0 15px rgba(32, 201, 151, 0.3)",
-                  textTransform: "none", // Override parent's uppercase for this span
+                  background: isDark
+                    ? "linear-gradient(135deg, #10B981, #059669)"
+                    : "linear-gradient(135deg, #059669, #047857)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
                 }}
               >
                 UrbanCruise
               </span>
             </h1>
             <p
-              className="fs-5 mb-0"
+              className="lead"
               style={{
-                fontFamily: '"Roboto", sans-serif',
-                color: uiColors.headingSecondary,
-                lineHeight: "1.7",
-                maxWidth: "800px",
+                color: isDark ? "#9CA3AF" : "#6B7280",
+                fontSize: "1.25rem",
+                maxWidth: "700px",
                 margin: "0 auto",
-                transition: uiColors.transition,
-                fontWeight: "400",
+                lineHeight: "1.6",
               }}
             >
-              Discover the unparalleled advantages that make{" "}
-              <span
-                style={{ fontWeight: "700", color: isDark ? "#FFF" : "#000" }}
-              >
-                UrbanCruise
-              </span>{" "}
-              your ultimate choice for seamless and exceptional vehicle rentals.
+              Discover the unparalleled advantages that make UrbanCruise your
+              ultimate choice for seamless and exceptional vehicle rentals.
             </p>
           </Col>
         </Row>
 
         {/* Features Grid */}
-        <Row className="text-center justify-content-center g-4">
-          {features.map((feature) => (
-            <Col xs={12} md={6} lg={4} key={feature.id}>
-              <Card
-                className="h-100 p-4 rounded-4"
-                style={{
-                  backgroundColor: uiColors.cardBg,
-                  border: uiColors.cardBorder,
-                  boxShadow:
-                    hoveredFeature === feature.id
-                      ? uiColors.cardHoverShadow
-                      : uiColors.cardShadow,
-                  transition: uiColors.transition,
-                  transform:
-                    hoveredFeature === feature.id
-                      ? "translateY(-5px)"
-                      : "translateY(0)",
-                  cursor: "default",
-                }}
-                onMouseEnter={() => setHoveredFeature(feature.id)}
-                onMouseLeave={() => setHoveredFeature(null)}
-              >
-                <Card.Body className="d-flex flex-column align-items-center justify-content-center">
+        <Row className="g-4 justify-content-center">
+          {features.map((feature, index) => {
+            const IconComponent = feature.icon;
+            return (
+              <Col xs={12} md={6} lg={4} key={feature.id}>
+                <Card
+                  className="h-100 border-0 position-relative overflow-hidden"
+                  style={{
+                    backgroundColor: isDark ? "#1F2937" : "#FFFFFF",
+                    borderRadius: "20px",
+                    boxShadow: isDark
+                      ? "0 25px 50px -12px rgba(0, 0, 0, 0.5)"
+                      : "0 25px 50px -12px rgba(0, 0, 0, 0.1)",
+                    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                    transform:
+                      hoveredFeature === feature.id
+                        ? "translateY(-8px) scale(1.02)"
+                        : "translateY(0) scale(1)",
+                    cursor: "pointer",
+                  }}
+                  onMouseEnter={() => setHoveredFeature(feature.id)}
+                  onMouseLeave={() => setHoveredFeature(null)}
+                >
+                  {/* Gradient overlay */}
                   <div
-                    className="mb-4 d-flex align-items-center justify-content-center rounded-circle"
+                    className="position-absolute top-0 start-0 w-100 h-100"
                     style={{
-                      width: "90px",
-                      height: "90px",
-                      background: uiColors.iconContainerBg,
-                      color: uiColors.iconColor,
-                      transition: uiColors.transition,
-                      boxShadow: uiColors.iconShadow,
-                      border: `2px solid ${isDark ? "#20C997" : "#007bff"}`,
+                      background: `linear-gradient(135deg, ${feature.color}15, transparent)`,
+                      opacity: hoveredFeature === feature.id ? 1 : 0,
+                      transition: "opacity 0.3s ease",
                     }}
-                  >
-                    {React.cloneElement(feature.icon, { size: "2.8em" })}
-                  </div>
+                  />
 
-                  <h4
-                    className="fs-4 fw-bold mb-3"
-                    style={{
-                      color: uiColors.featureTitleColor,
-                      transition: uiColors.transition,
-                    }}
-                  >
-                    {feature.title}
-                  </h4>
-                  <p
-                    className="fs-6 mb-0"
-                    style={{
-                      color: uiColors.textColor,
-                      transition: uiColors.transition,
-                    }}
-                  >
-                    {feature.description}
-                  </p>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
+                  <Card.Body className="p-4 p-lg-5 text-center position-relative">
+                    {/* Icon Container */}
+                    <div
+                      className="d-inline-flex align-items-center justify-content-center mb-4 position-relative"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                        borderRadius: "20px",
+                        background: `linear-gradient(135deg, ${feature.color}, ${feature.color}90)`,
+                        boxShadow: `0 15px 35px ${feature.color}30`,
+                      }}
+                    >
+                      <IconComponent
+                        size={36}
+                        color="#FFFFFF"
+                        strokeWidth={2}
+                      />
+
+                      {/* Floating particles effect */}
+                      <div
+                        className="position-absolute"
+                        style={{
+                          top: "-4px",
+                          right: "-4px",
+                          width: "12px",
+                          height: "12px",
+                          borderRadius: "50%",
+                          backgroundColor: feature.color,
+                          opacity: hoveredFeature === feature.id ? 1 : 0,
+                          transform:
+                            hoveredFeature === feature.id
+                              ? "translate(8px, -8px) scale(1)"
+                              : "translate(0, 0) scale(0)",
+                          transition: "all 0.3s ease",
+                        }}
+                      />
+                    </div>
+
+                    {/* Title */}
+                    <h3
+                      className="h4 fw-bold mb-3"
+                      style={{
+                        color: isDark ? "#F9FAFB" : "#111827",
+                        fontWeight: "700",
+                      }}
+                    >
+                      {feature.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p
+                      className="mb-4"
+                      style={{
+                        color: isDark ? "#D1D5DB" : "#6B7280",
+                        lineHeight: "1.6",
+                        fontSize: "1rem",
+                      }}
+                    >
+                      {feature.description}
+                    </p>
+
+                    {/* Learn More Link */}
+                    <div
+                      className="d-flex align-items-center justify-content-center gap-2"
+                      style={{
+                        color: feature.color,
+                        fontWeight: "600",
+                        fontSize: "0.9rem",
+                        opacity: hoveredFeature === feature.id ? 1 : 0,
+                        transform:
+                          hoveredFeature === feature.id
+                            ? "translateY(0)"
+                            : "translateY(10px)",
+                        transition: "all 0.3s ease",
+                      }}
+                    >
+                      Learn more
+                      <ChevronRight
+                        size={16}
+                        style={{
+                          transform:
+                            hoveredFeature === feature.id
+                              ? "translateX(4px)"
+                              : "translateX(0)",
+                          transition: "transform 0.3s ease",
+                        }}
+                      />
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            );
+          })}
+        </Row>
+
+        {/* Bottom CTA Section */}
+        <Row className="justify-content-center mt-5 pt-4">
+          <Col lg={8} className="text-center">
+            <div
+              className="p-4 rounded-4"
+              style={{
+                background: isDark
+                  ? "linear-gradient(135deg, #1F2937, #111827)"
+                  : "linear-gradient(135deg, #F3F4F6, #E5E7EB)",
+                border: isDark ? "1px solid #374151" : "1px solid #D1D5DB",
+              }}
+            >
+              <p
+                className="mb-0"
+                style={{
+                  color: isDark ? "#9CA3AF" : "#6B7280",
+                  fontSize: "1.1rem",
+                  fontWeight: "500",
+                }}
+              >
+                Ready to experience the difference?{" "}
+                <span
+                  style={{
+                    color: isDark ? "#10B981" : "#059669",
+                    fontWeight: "600",
+                  }}
+                >
+                  Start your journey today
+                </span>
+              </p>
+            </div>
+          </Col>
         </Row>
       </Container>
     </div>

@@ -6,19 +6,25 @@ import {
   Row,
   Col,
   Form,
-  ListGroup,
   Button,
   Spinner,
   Card,
+  Badge,
 } from "react-bootstrap";
-import { TbEngine, TbManualGearbox } from "react-icons/tb";
 import {
-  BsCarFront,
-  BsFillCarFrontFill,
-  BsFillFuelPumpFill,
-} from "react-icons/bs";
-import { PiEngineFill } from "react-icons/pi";
-import { MdOutlineDateRange } from "react-icons/md";
+  ArrowLeft,
+  Calendar,
+  MapPin,
+  Fuel,
+  Gauge,
+  Settings,
+  Car,
+  Star,
+  CreditCard,
+  CheckCircle,
+  Clock,
+  Users,
+} from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchBrands,
@@ -29,11 +35,10 @@ import {
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { addDoc, collection, doc, setDoc, getDoc } from "firebase/firestore";
-import { db } from "../config/firebase";
+import { db, auth } from "../config/firebase";
 import { useTheme } from "../context/ThemeContext";
 
 const VehicleDetail = () => {
-  // eslint-disable-next-line no-unused-vars
   const dispatch = useDispatch();
   const user = useSelector(({ UserSlice }) => UserSlice.user);
   const { theme } = useTheme();
@@ -42,7 +47,7 @@ const VehicleDetail = () => {
   const { category, vehicleBrand, vehicleModel, vehicleId } = useParams();
   const navigate = useNavigate();
 
-  const [vehicles, setVehicles] = useState(null); // Now holds the specific vehicle data
+  const [vehicles, setVehicles] = useState(null);
   const [brands, setBrands] = useState(null);
   const [models, setModels] = useState(null);
   const [locations, setLocations] = useState(null);
@@ -72,7 +77,7 @@ const VehicleDetail = () => {
     const start = new Date(rentDate.start);
     const end = new Date(rentDate.end);
     if (start.getTime() > end.getTime()) {
-      return 0; // Invalid date range
+      return 0;
     }
     const diffTime = Math.abs(end - start);
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -206,8 +211,32 @@ const VehicleDetail = () => {
       description: `${category.slice(0, -1)} Reservation Payment`,
       handler: async function (response) {
         try {
+          // Verify user is still authenticated
+          if (!user || !user.email) {
+            throw new Error("User authentication lost during payment process");
+          }
+
+          console.log("Payment successful, processing reservation...");
+          console.log("User:", user.email);
+          console.log("User UID:", user.uid);
+          console.log("Vehicle ID:", vehicleId);
+          console.log("Category:", category);
+
+          // Check Firebase Auth state
+          const currentUser = auth.currentUser;
+          console.log(
+            "Firebase Auth Current User:",
+            currentUser ? currentUser.email : "No user"
+          );
+          console.log(
+            "Firebase Auth Token exists:",
+            currentUser ? "Yes" : "No"
+          );
+
           const singularCategory = category.slice(0, -1);
           const vehicleDocRef = doc(db, "vehicle", category);
+
+          console.log("Attempting to read vehicle collection...");
           const currentVehiclesCollectionSnap = await getDoc(vehicleDocRef);
 
           if (!currentVehiclesCollectionSnap.exists()) {
@@ -256,7 +285,9 @@ const VehicleDetail = () => {
             [vehicleId]: updatedVehicleData,
           };
 
+          console.log("Attempting to update vehicle collection...");
           await setDoc(vehicleDocRef, newCollectionData);
+          console.log("Vehicle collection updated successfully");
 
           setVehicles(updatedVehicleData);
 
@@ -275,7 +306,9 @@ const VehicleDetail = () => {
             totalAmount: amount / 100,
           };
 
+          console.log("Attempting to create rental record...");
           await addDoc(collection(db, "rentals"), reservationData);
+          console.log("Rental record created successfully");
 
           setReservationCompleted(true);
 
@@ -286,11 +319,23 @@ const VehicleDetail = () => {
           );
         } catch (err) {
           console.error("Error after payment:", err);
-          Swal.fire(
-            "Error",
-            "Reservation failed after payment. Please try again.",
-            "error"
-          );
+
+          let errorMessage =
+            "Reservation failed after payment. Please try again.";
+
+          // Provide more specific error messages
+          if (err.code === "permission-denied") {
+            errorMessage =
+              "Permission denied. Please ensure you are logged in and try again.";
+          } else if (err.code === "unavailable") {
+            errorMessage =
+              "Service temporarily unavailable. Please try again in a moment.";
+          } else if (err.message.includes("permission")) {
+            errorMessage =
+              "Database permission error. Please contact support if this persists.";
+          }
+
+          Swal.fire("Error", errorMessage, "error");
         }
       },
       prefill: {
@@ -298,7 +343,7 @@ const VehicleDetail = () => {
         email: user.email,
       },
       theme: {
-        color: isDark ? "#20C997" : "#007bff",
+        color: isDark ? "#3B82F6" : "#2563EB",
       },
     };
 
@@ -324,439 +369,652 @@ const VehicleDetail = () => {
           models[`${singularCategoryPrefix}-${String(vehicle.brandId)}`][
             String(vehicle.modelId)
           ] || vehicleModel
-        ).toUpperCase() // Capitalize here
-      : (vehicleModel || "").toUpperCase(); // Capitalize fallback as well
+        ).toUpperCase()
+      : (vehicleModel || "").toUpperCase();
 
   const renderContent = () => {
     if (isLoading) {
       return (
-        <div className="text-center py-5">
-          <Spinner
-            animation="border"
-            role="status"
-            variant={isDark ? "info" : "primary"}
-          >
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-          <p
-            className="mt-3"
-            style={{ color: isDark ? "#ADD8E6" : "var(--bs-primary)" }}
-          >
-            Loading {category.slice(0, -1)} details...
-          </p>
+        <div
+          className="d-flex align-items-center justify-content-center"
+          style={{ minHeight: "500px" }}
+        >
+          <div className="text-center">
+            <Spinner
+              animation="border"
+              style={{
+                color: isDark ? "#3B82F6" : "#2563EB",
+                width: "3rem",
+                height: "3rem",
+              }}
+            />
+            <p
+              className="mt-3 fw-medium"
+              style={{ color: isDark ? "#9CA3AF" : "#6B7280" }}
+            >
+              Loading {category.slice(0, -1)} details...
+            </p>
+          </div>
         </div>
       );
     }
 
     if (fetchError) {
-      return <p className="text-danger text-center fw-bold">{fetchError}</p>;
+      return (
+        <div className="text-center py-5">
+          <p className="text-danger fw-bold fs-5">{fetchError}</p>
+          <Button
+            onClick={() => navigate(-1)}
+            className="mt-3"
+            style={{
+              backgroundColor: isDark ? "#374151" : "#F3F4F6",
+              color: isDark ? "#E5E7EB" : "#374151",
+              border: "none",
+            }}
+          >
+            Go Back
+          </Button>
+        </div>
+      );
     }
 
     if (!vehicle) {
       return (
-        <p className="text-danger text-center fw-bold">
-          This {category.slice(0, -1)} was not found!
-        </p>
+        <div className="text-center py-5">
+          <p className="text-danger fw-bold fs-5">
+            This {category.slice(0, -1)} was not found!
+          </p>
+          <Button
+            onClick={() => navigate(-1)}
+            className="mt-3"
+            style={{
+              backgroundColor: isDark ? "#374151" : "#F3F4F6",
+              color: isDark ? "#E5E7EB" : "#374151",
+              border: "none",
+            }}
+          >
+            Go Back
+          </Button>
+        </div>
       );
     }
 
     const currentStock = getEffectiveStockCount(vehicle);
-
-    // Theme-dependent colors
-    const iconColor = isDark ? "#20C997" : "#007bff"; // Primary/accent color for icons
-    const textColor = isDark ? "#E0E0E0" : "#555555"; // General text color, slightly darker for light mode
-    const headingColor = isDark ? "#ADD8E6" : "#333333"; // For h1/h2/h3
-    const sectionBgColor = isDark ? "#1a1a1a" : "#FFFFFF"; // Card background
-    const borderColor = isDark ? "#444444" : "#EBEBEB"; // Card and divider border
-    const listGroupItemBg = isDark ? "#2a2a2a" : "#F7F7F7"; // List item background
-    const listGroupItemBorder = isDark ? "#3a3a3a" : "#EFEFEF"; // List item border
-    const inputBgColor = isDark ? "#333333" : "#FFFFFF"; // Form input/select background
-    const inputBorderColor = isDark ? "#555555" : "#D0D0D0"; // Form input/select border
-    const inputTextColor = isDark ? "#E0E0E0" : "#333333"; // Form input/select text
+    const isAvailable = currentStock > 0;
+    const totalAmount = (vehicle.pricePerDay || 500) * getRentalDays();
 
     return (
-      <Card
-        className="p-4 shadow-lg rounded-3"
-        style={{
-          backgroundColor: sectionBgColor,
-          border: `1px solid ${borderColor}`,
-          transition: "all 0.3s ease-in-out",
-          boxShadow: isDark
-            ? "0 10px 30px rgba(0, 0, 0, 0.5)"
-            : "0 10px 30px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <Card.Body>
-          <Row className="align-items-center mb-4">
-            <Col md={6} className="text-center mb-3 mb-md-0">
+      <div>
+        {/* Header with Breadcrumb */}
+        <div className="mb-4">
+          <Button
+            variant="link"
+            onClick={() => navigate(-1)}
+            className="d-flex align-items-center gap-2 p-0 mb-3 text-decoration-none"
+            style={{
+              color: isDark ? "#9CA3AF" : "#6B7280",
+              fontSize: "0.875rem",
+            }}
+          >
+            <ArrowLeft size={16} />
+            Back to vehicles
+          </Button>
+
+          <div className="d-flex align-items-center gap-2 mb-2">
+            <Badge
+              className="px-3 py-2"
+              style={{
+                backgroundColor: isDark
+                  ? "rgba(59, 130, 246, 0.1)"
+                  : "rgba(37, 99, 235, 0.1)",
+                color: isDark ? "#60A5FA" : "#2563EB",
+                border: isDark
+                  ? "1px solid rgba(59, 130, 246, 0.2)"
+                  : "1px solid rgba(37, 99, 235, 0.2)",
+                borderRadius: "8px",
+                fontSize: "0.75rem",
+                fontWeight: "500",
+              }}
+            >
+              {category === "cars" ? "Car" : "Bike"}
+            </Badge>
+            <Badge
+              className="px-3 py-2"
+              style={{
+                backgroundColor: isAvailable
+                  ? isDark
+                    ? "rgba(16, 185, 129, 0.1)"
+                    : "rgba(16, 185, 129, 0.1)"
+                  : isDark
+                  ? "rgba(239, 68, 68, 0.1)"
+                  : "rgba(239, 68, 68, 0.1)",
+                color: isAvailable
+                  ? isDark
+                    ? "#34D399"
+                    : "#059669"
+                  : isDark
+                  ? "#F87171"
+                  : "#DC2626",
+                border: isAvailable
+                  ? isDark
+                    ? "1px solid rgba(16, 185, 129, 0.2)"
+                    : "1px solid rgba(16, 185, 129, 0.2)"
+                  : isDark
+                  ? "1px solid rgba(239, 68, 68, 0.2)"
+                  : "1px solid rgba(239, 68, 68, 0.2)",
+                borderRadius: "8px",
+                fontSize: "0.75rem",
+                fontWeight: "500",
+              }}
+            >
+              {isAvailable ? `${currentStock} Available` : "Out of Stock"}
+            </Badge>
+          </div>
+
+          <h1
+            className="fw-bold mb-1"
+            style={{
+              color: isDark ? "#F9FAFB" : "#111827",
+              fontSize: "2.5rem",
+              lineHeight: "1.2",
+            }}
+          >
+            {vehicleBrandName} {vehicleModelName}
+          </h1>
+        </div>
+
+        <Row className="g-4">
+          {/* Vehicle Image */}
+          <Col lg={6}>
+            <Card
+              className="border-0 overflow-hidden"
+              style={{
+                backgroundColor: isDark ? "#1F2937" : "#FFFFFF",
+                borderRadius: "20px",
+                boxShadow: isDark
+                  ? "0 10px 25px rgba(0, 0, 0, 0.3)"
+                  : "0 10px 25px rgba(0, 0, 0, 0.1)",
+              }}
+            >
               <div
-                className="image-container rounded-3 overflow-hidden shadow-sm"
                 style={{
-                  height: "300px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: isDark ? "#000" : "#f0f0f0",
-                  border: `1px solid ${borderColor}`,
+                  height: "400px",
+                  backgroundColor: isDark ? "#111827" : "#F9FAFB",
+                  position: "relative",
                 }}
               >
                 <LazyLoadImage
                   src={vehicle.image}
-                  alt={`${vehicleBrandName} / ${vehicleModelName}`}
-                  className="img-fluid"
+                  alt={`${vehicleBrandName} ${vehicleModelName}`}
+                  className="w-100 h-100"
                   effect="blur"
                   style={{
                     objectFit: "contain",
-                    width: "100%",
-                    height: "100%",
+                    borderRadius: "20px",
                   }}
                   placeholderSrc="https://placehold.co/600x400/cccccc/ffffff?text=Loading..."
                 />
+
+                {/* Price Badge on Image */}
+                <div className="position-absolute bottom-0 start-0 m-4">
+                  <Badge
+                    className="px-3 py-2 fw-bold"
+                    style={{
+                      backgroundColor: isDark
+                        ? "rgba(59, 130, 246, 0.9)"
+                        : "rgba(37, 99, 235, 0.9)",
+                      color: "#FFFFFF",
+                      borderRadius: "12px",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    ₹{vehicle.pricePerDay || 500}/day
+                  </Badge>
+                </div>
               </div>
-            </Col>
-            <Col md={6}>
-              <h2 className="fw-bold mb-3" style={{ color: headingColor }}>
-                {vehicleBrandName} {vehicleModelName}
-              </h2>
-              <ListGroup
-                variant="flush"
-                className="rounded-2"
-                style={{ border: `1px solid ${borderColor}` }}
-              >
-                <ListGroup.Item
-                  className="d-flex align-items-center"
-                  style={{
-                    backgroundColor: listGroupItemBg,
-                    color: textColor,
-                    borderBottom: `1px solid ${listGroupItemBorder}`,
-                  }}
-                >
-                  <BsFillCarFrontFill
-                    size={20}
-                    className="me-3"
-                    style={{ color: iconColor }}
-                  />
-                  Vehicle Type: {category === "cars" ? "Car" : "Bike"}
-                </ListGroup.Item>
-                <ListGroup.Item
-                  className="d-flex align-items-center"
-                  style={{
-                    backgroundColor: listGroupItemBg,
-                    color: textColor,
-                    borderBottom: `1px solid ${listGroupItemBorder}`,
-                  }}
-                >
-                  <TbEngine
-                    size={20}
-                    className="me-3"
-                    style={{ color: iconColor }}
-                  />
-                  Horsepower: {vehicle.power || "N/A"} HP
-                </ListGroup.Item>
-                <ListGroup.Item
-                  className="d-flex align-items-center"
-                  style={{
-                    backgroundColor: listGroupItemBg,
-                    color: textColor,
-                    borderBottom: `1px solid ${listGroupItemBorder}`,
-                  }}
-                >
-                  <PiEngineFill
-                    size={20}
-                    className="me-3"
-                    style={{ color: iconColor }}
-                  />
-                  Engine Size: {vehicle.engineSize || "N/A"} cc
-                </ListGroup.Item>
-                <ListGroup.Item
-                  className="d-flex align-items-center"
-                  style={{
-                    backgroundColor: listGroupItemBg,
-                    color: textColor,
-                    borderBottom: `1px solid ${listGroupItemBorder}`,
-                  }}
-                >
-                  <TbManualGearbox
-                    size={20}
-                    className="me-3"
-                    style={{ color: iconColor }}
-                  />
-                  Gearbox: {vehicle.gearbox || "N/A"}
-                </ListGroup.Item>
-                <ListGroup.Item
-                  className="d-flex align-items-center"
-                  style={{
-                    backgroundColor: listGroupItemBg,
-                    color: textColor,
-                    borderBottom: `1px solid ${listGroupItemBorder}`,
-                  }}
-                >
-                  <BsCarFront
-                    size={20}
-                    className="me-3"
-                    style={{ color: iconColor }}
-                  />
-                  Body Type: {vehicle.bodyType || "N/A"}
-                </ListGroup.Item>
-                <ListGroup.Item
-                  className="d-flex align-items-center"
-                  style={{
-                    backgroundColor: listGroupItemBg,
-                    color: textColor,
-                    borderBottom: `1px solid ${listGroupItemBorder}`,
-                  }}
-                >
-                  <BsFillFuelPumpFill
-                    size={20}
-                    className="me-3"
-                    style={{ color: iconColor }}
-                  />
-                  Fuel Type: {vehicle.fuelType || "N/A"}
-                </ListGroup.Item>
-                <ListGroup.Item
-                  className="d-flex align-items-center"
-                  style={{ backgroundColor: listGroupItemBg, color: textColor }}
-                >
-                  <MdOutlineDateRange
-                    size={20}
-                    className="me-3"
-                    style={{ color: iconColor }}
-                  />
-                  Model Year: {vehicle.year || "N/A"}
-                </ListGroup.Item>
-              </ListGroup>
-              <div className="mt-3 text-end">
-                <h5 className="fw-bold" style={{ color: iconColor }}>
-                  Price per day: ₹{vehicle.pricePerDay || 0}
-                </h5>
-                <p
-                  className={`fw-bold mb-0 ${
-                    currentStock > 0 ? "text-success" : "text-danger"
-                  }`}
-                  style={{ fontSize: "1.1rem", color: textColor }}
-                >
-                  Available Stock: {currentStock}
-                </p>
-              </div>
-            </Col>
-          </Row>
+            </Card>
+          </Col>
 
-          <hr className="my-5" style={{ borderColor: borderColor }} />
-
-          <h3 className="fw-bold mb-4" style={{ color: headingColor }}>
-            Book Your Ride
-          </h3>
-          <Row className="g-4">
-            <Col md={6}>
-              <Form.Group>
-                <Form.Label
-                  className="fw-semibold"
-                  style={{ color: textColor }}
-                >
-                  Pick-Up Location
-                </Form.Label>
-                <Form.Select
-                  value={selectedLocations.pickup}
-                  onChange={(e) =>
-                    setSelectedLocations({
-                      ...selectedLocations,
-                      pickup: e.target.value,
-                    })
-                  }
-                  className="form-control-lg"
-                  style={{
-                    backgroundColor: inputBgColor,
-                    color: inputTextColor,
-                    borderColor: inputBorderColor,
-                    boxShadow: isDark ? "none" : "0 2px 5px rgba(0,0,0,0.05)",
-                  }}
-                >
-                  <option value="" style={{ color: isDark ? "#AAA" : "#888" }}>
-                    Select pick-up location
-                  </option>
-                  {locations &&
-                    Object.entries(locations).map(([locKey, locValue]) => (
-                      <option
-                        key={locKey}
-                        value={locKey}
-                        style={{
-                          backgroundColor: isDark ? "#333" : "#FFF",
-                          color: inputTextColor,
-                        }}
-                      >
-                        {locValue}
-                      </option>
-                    ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group>
-                <Form.Label
-                  className="fw-semibold"
-                  style={{ color: textColor }}
-                >
-                  Drop-Off Location
-                </Form.Label>
-                <Form.Select
-                  value={selectedLocations.dropoff}
-                  onChange={(e) =>
-                    setSelectedLocations({
-                      ...selectedLocations,
-                      dropoff: e.target.value,
-                    })
-                  }
-                  className="form-control-lg"
-                  style={{
-                    backgroundColor: inputBgColor,
-                    color: inputTextColor,
-                    borderColor: inputBorderColor,
-                    boxShadow: isDark ? "none" : "0 2px 5px rgba(0,0,0,0.05)",
-                  }}
-                >
-                  <option value="" style={{ color: isDark ? "#AAA" : "#888" }}>
-                    Select drop-off location
-                  </option>
-                  {locations &&
-                    Object.entries(locations).map(([locKey, locValue]) => (
-                      <option
-                        key={locKey}
-                        value={locKey}
-                        style={{
-                          backgroundColor: isDark ? "#333" : "#FFF",
-                          color: inputTextColor,
-                        }}
-                      >
-                        {locValue}
-                      </option>
-                    ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group>
-                <Form.Label
-                  className="fw-semibold"
-                  style={{ color: textColor }}
-                >
-                  Start Date
-                </Form.Label>
-                <Form.Control
-                  type="date"
-                  value={rentDate.start}
-                  onChange={(e) =>
-                    setRentDate({ ...rentDate, start: e.target.value })
-                  }
-                  className="form-control-lg"
-                  style={{
-                    backgroundColor: inputBgColor,
-                    color: inputTextColor,
-                    borderColor: inputBorderColor,
-                    boxShadow: isDark ? "none" : "0 2px 5px rgba(0,0,0,0.05)",
-                  }}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group>
-                <Form.Label
-                  className="fw-semibold"
-                  style={{ color: textColor }}
-                >
-                  End Date
-                </Form.Label>
-                <Form.Control
-                  type="date"
-                  value={rentDate.end}
-                  onChange={(e) =>
-                    setRentDate({ ...rentDate, end: e.target.value })
-                  }
-                  className="form-control-lg"
-                  style={{
-                    backgroundColor: inputBgColor,
-                    color: inputTextColor,
-                    borderColor: inputBorderColor,
-                    boxShadow: isDark ? "none" : "0 2px 5px rgba(0,0,0,0.05)",
-                  }}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <div
-            className="d-flex flex-column flex-md-row justify-content-between align-items-center mt-5 pt-3 border-top"
-            style={{ borderColor: borderColor }}
-          >
-            <div
-              className="total-price fw-bold mb-3 mb-md-0"
-              style={{ fontSize: "1.4rem", color: headingColor }}
-            >
-              Total Price:{" "}
-              <span style={{ color: iconColor }}>
-                ₹{getRentalDays() * (vehicle.pricePerDay || 0)}
-              </span>
-            </div>
-            <Button
-              variant={isDark ? "success" : "primary"}
-              onClick={handleReserveButtonClick}
-              disabled={
-                reservationCompleted ||
-                currentStock <= 0 ||
-                getRentalDays() <= 0 ||
-                !selectedLocations.pickup ||
-                !selectedLocations.dropoff
-              }
-              className="px-5 py-3 rounded-pill fw-bold"
+          {/* Vehicle Details & Booking Form */}
+          <Col lg={6}>
+            {/* Vehicle Specifications */}
+            <Card
+              className="border-0 mb-4"
               style={{
-                transition: "all 0.3s ease",
-                backgroundColor: isDark ? "#20C997" : "#007bff",
-                borderColor: isDark ? "#20C997" : "#007bff",
-                color: "white", // Ensure button text is white for both modes
-                // Hover styles directly here for better control, or use a pseudo-class in a CSS module
-                "--bs-btn-hover-bg": isDark ? "#1AA07B" : "#0056b3",
-                "--bs-btn-hover-border-color": isDark ? "#1AA07B" : "#0056b3",
-                opacity:
-                  reservationCompleted ||
-                  currentStock <= 0 ||
-                  getRentalDays() <= 0 ||
-                  !selectedLocations.pickup ||
-                  !selectedLocations.dropoff
-                    ? 0.6
-                    : 1,
-                cursor:
-                  reservationCompleted ||
-                  currentStock <= 0 ||
-                  getRentalDays() <= 0 ||
-                  !selectedLocations.pickup ||
-                  !selectedLocations.dropoff
-                    ? "not-allowed"
-                    : "pointer",
+                backgroundColor: isDark ? "#1F2937" : "#FFFFFF",
+                borderRadius: "16px",
+                boxShadow: isDark
+                  ? "0 4px 6px rgba(0, 0, 0, 0.3)"
+                  : "0 4px 6px rgba(0, 0, 0, 0.05)",
               }}
             >
-              {reservationCompleted
-                ? "Reserved ✅"
-                : currentStock <= 0
-                ? "Out of Stock"
-                : "Reserve Now (Pay)"}
-            </Button>
-          </div>
-        </Card.Body>
-      </Card>
+              <Card.Body className="p-4">
+                <h5
+                  className="fw-bold mb-3"
+                  style={{ color: isDark ? "#F9FAFB" : "#111827" }}
+                >
+                  Specifications
+                </h5>
+
+                <div className="row g-3">
+                  <div className="col-6">
+                    <div className="d-flex align-items-center gap-2">
+                      <Fuel
+                        size={18}
+                        style={{ color: isDark ? "#60A5FA" : "#2563EB" }}
+                      />
+                      <div>
+                        <div
+                          style={{
+                            color: isDark ? "#9CA3AF" : "#6B7280",
+                            fontSize: "0.75rem",
+                          }}
+                        >
+                          Fuel Type
+                        </div>
+                        <div
+                          style={{
+                            color: isDark ? "#E5E7EB" : "#374151",
+                            fontSize: "0.875rem",
+                            fontWeight: "500",
+                          }}
+                        >
+                          {vehicle.fuelType || "Petrol"}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-6">
+                    <div className="d-flex align-items-center gap-2">
+                      <Gauge
+                        size={18}
+                        style={{ color: isDark ? "#60A5FA" : "#2563EB" }}
+                      />
+                      <div>
+                        <div
+                          style={{
+                            color: isDark ? "#9CA3AF" : "#6B7280",
+                            fontSize: "0.75rem",
+                          }}
+                        >
+                          Engine
+                        </div>
+                        <div
+                          style={{
+                            color: isDark ? "#E5E7EB" : "#374151",
+                            fontSize: "0.875rem",
+                            fontWeight: "500",
+                          }}
+                        >
+                          {vehicle.engineSize || "N/A"} cc
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-6">
+                    <div className="d-flex align-items-center gap-2">
+                      <Settings
+                        size={18}
+                        style={{ color: isDark ? "#60A5FA" : "#2563EB" }}
+                      />
+                      <div>
+                        <div
+                          style={{
+                            color: isDark ? "#9CA3AF" : "#6B7280",
+                            fontSize: "0.75rem",
+                          }}
+                        >
+                          Gearbox
+                        </div>
+                        <div
+                          style={{
+                            color: isDark ? "#E5E7EB" : "#374151",
+                            fontSize: "0.875rem",
+                            fontWeight: "500",
+                          }}
+                        >
+                          {vehicle.gearbox || "Manual"}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-6">
+                    <div className="d-flex align-items-center gap-2">
+                      <Car
+                        size={18}
+                        style={{ color: isDark ? "#60A5FA" : "#2563EB" }}
+                      />
+                      <div>
+                        <div
+                          style={{
+                            color: isDark ? "#9CA3AF" : "#6B7280",
+                            fontSize: "0.75rem",
+                          }}
+                        >
+                          Body Type
+                        </div>
+                        <div
+                          style={{
+                            color: isDark ? "#E5E7EB" : "#374151",
+                            fontSize: "0.875rem",
+                            fontWeight: "500",
+                          }}
+                        >
+                          {vehicle.bodyType || "Standard"}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+
+            {/* Booking Form */}
+            <Card
+              className="border-0"
+              style={{
+                backgroundColor: isDark ? "#1F2937" : "#FFFFFF",
+                borderRadius: "16px",
+                boxShadow: isDark
+                  ? "0 4px 6px rgba(0, 0, 0, 0.3)"
+                  : "0 4px 6px rgba(0, 0, 0, 0.05)",
+              }}
+            >
+              <Card.Body className="p-4">
+                <h5
+                  className="fw-bold mb-4 d-flex align-items-center gap-2"
+                  style={{ color: isDark ? "#F9FAFB" : "#111827" }}
+                >
+                  <Calendar size={20} />
+                  Book Your Ride
+                </h5>
+
+                {/* Date Selection */}
+                <Row className="g-3 mb-4">
+                  <Col md={6}>
+                    <label
+                      className="form-label fw-semibold mb-2"
+                      style={{
+                        color: isDark ? "#D1D5DB" : "#374151",
+                        fontSize: "0.875rem",
+                      }}
+                    >
+                      Start Date
+                    </label>
+                    <Form.Control
+                      type="date"
+                      value={rentDate.start}
+                      onChange={(e) =>
+                        setRentDate({ ...rentDate, start: e.target.value })
+                      }
+                      min={getDateByInputFormat()}
+                      style={{
+                        backgroundColor: isDark ? "#374151" : "#F9FAFB",
+                        color: isDark ? "#F9FAFB" : "#111827",
+                        border: isDark
+                          ? "1px solid #4B5563"
+                          : "1px solid #D1D5DB",
+                        borderRadius: "12px",
+                        padding: "0.75rem",
+                      }}
+                    />
+                  </Col>
+                  <Col md={6}>
+                    <label
+                      className="form-label fw-semibold mb-2"
+                      style={{
+                        color: isDark ? "#D1D5DB" : "#374151",
+                        fontSize: "0.875rem",
+                      }}
+                    >
+                      End Date
+                    </label>
+                    <Form.Control
+                      type="date"
+                      value={rentDate.end}
+                      onChange={(e) =>
+                        setRentDate({ ...rentDate, end: e.target.value })
+                      }
+                      min={rentDate.start}
+                      style={{
+                        backgroundColor: isDark ? "#374151" : "#F9FAFB",
+                        color: isDark ? "#F9FAFB" : "#111827",
+                        border: isDark
+                          ? "1px solid #4B5563"
+                          : "1px solid #D1D5DB",
+                        borderRadius: "12px",
+                        padding: "0.75rem",
+                      }}
+                    />
+                  </Col>
+                </Row>
+
+                {/* Location Selection */}
+                <Row className="g-3 mb-4">
+                  <Col md={6}>
+                    <label
+                      className="form-label fw-semibold mb-2 d-flex align-items-center gap-2"
+                      style={{
+                        color: isDark ? "#D1D5DB" : "#374151",
+                        fontSize: "0.875rem",
+                      }}
+                    >
+                      <MapPin size={16} />
+                      Pick-up Location
+                    </label>
+                    <Form.Select
+                      value={selectedLocations.pickup}
+                      onChange={(e) =>
+                        setSelectedLocations({
+                          ...selectedLocations,
+                          pickup: e.target.value,
+                        })
+                      }
+                      style={{
+                        backgroundColor: isDark ? "#374151" : "#F9FAFB",
+                        color: isDark ? "#F9FAFB" : "#111827",
+                        border: isDark
+                          ? "1px solid #4B5563"
+                          : "1px solid #D1D5DB",
+                        borderRadius: "12px",
+                        padding: "0.75rem",
+                      }}
+                    >
+                      <option value="">Choose pick-up location</option>
+                      {locations &&
+                        Object.entries(locations).map(([id, location]) => (
+                          <option key={id} value={location}>
+                            {location}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  </Col>
+                  <Col md={6}>
+                    <label
+                      className="form-label fw-semibold mb-2 d-flex align-items-center gap-2"
+                      style={{
+                        color: isDark ? "#D1D5DB" : "#374151",
+                        fontSize: "0.875rem",
+                      }}
+                    >
+                      <MapPin size={16} />
+                      Drop-off Location
+                    </label>
+                    <Form.Select
+                      value={selectedLocations.dropoff}
+                      onChange={(e) =>
+                        setSelectedLocations({
+                          ...selectedLocations,
+                          dropoff: e.target.value,
+                        })
+                      }
+                      style={{
+                        backgroundColor: isDark ? "#374151" : "#F9FAFB",
+                        color: isDark ? "#F9FAFB" : "#111827",
+                        border: isDark
+                          ? "1px solid #4B5563"
+                          : "1px solid #D1D5DB",
+                        borderRadius: "12px",
+                        padding: "0.75rem",
+                      }}
+                    >
+                      <option value="">Choose drop-off location</option>
+                      {locations &&
+                        Object.entries(locations).map(([id, location]) => (
+                          <option key={id} value={location}>
+                            {location}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  </Col>
+                </Row>
+
+                {/* Rental Summary */}
+                <div
+                  className="p-4 mb-4"
+                  style={{
+                    backgroundColor: isDark ? "#111827" : "#F9FAFB",
+                    borderRadius: "12px",
+                    border: isDark ? "1px solid #374151" : "1px solid #E5E7EB",
+                  }}
+                >
+                  <h6
+                    className="fw-bold mb-3"
+                    style={{ color: isDark ? "#F9FAFB" : "#111827" }}
+                  >
+                    Rental Summary
+                  </h6>
+
+                  <div className="d-flex justify-content-between align-items-center mb-2">
+                    <span
+                      style={{
+                        color: isDark ? "#9CA3AF" : "#6B7280",
+                        fontSize: "0.875rem",
+                      }}
+                    >
+                      <Clock size={16} className="me-1" />
+                      Duration: {getRentalDays()} day
+                      {getRentalDays() !== 1 ? "s" : ""}
+                    </span>
+                    <span
+                      style={{
+                        color: isDark ? "#E5E7EB" : "#374151",
+                        fontWeight: "500",
+                      }}
+                    >
+                      ₹{vehicle.pricePerDay || 500} × {getRentalDays()}
+                    </span>
+                  </div>
+
+                  <hr
+                    style={{
+                      borderColor: isDark ? "#374151" : "#E5E7EB",
+                      margin: "0.75rem 0",
+                    }}
+                  />
+
+                  <div className="d-flex justify-content-between align-items-center">
+                    <span
+                      className="fw-bold"
+                      style={{
+                        color: isDark ? "#F9FAFB" : "#111827",
+                        fontSize: "1.125rem",
+                      }}
+                    >
+                      Total Amount
+                    </span>
+                    <span
+                      className="fw-bold"
+                      style={{
+                        color: isDark ? "#60A5FA" : "#2563EB",
+                        fontSize: "1.25rem",
+                      }}
+                    >
+                      ₹{totalAmount}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Reserve Button */}
+                <Button
+                  onClick={handleReserveButtonClick}
+                  disabled={!isAvailable || reservationCompleted}
+                  className="w-100 d-flex align-items-center justify-content-center gap-2 fw-bold py-3 border-0"
+                  style={{
+                    backgroundColor:
+                      isAvailable && !reservationCompleted
+                        ? isDark
+                          ? "#3B82F6"
+                          : "#2563EB"
+                        : isDark
+                        ? "#4B5563"
+                        : "#9CA3AF",
+                    color: "#FFFFFF",
+                    borderRadius: "12px",
+                    fontSize: "1.1rem",
+                    transition: "all 0.3s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (isAvailable && !reservationCompleted) {
+                      e.target.style.backgroundColor = isDark
+                        ? "#2563EB"
+                        : "#1D4ED8";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (isAvailable && !reservationCompleted) {
+                      e.target.style.backgroundColor = isDark
+                        ? "#3B82F6"
+                        : "#2563EB";
+                    }
+                  }}
+                >
+                  {reservationCompleted ? (
+                    <>
+                      <CheckCircle size={20} />
+                      Reservation Completed
+                    </>
+                  ) : !isAvailable ? (
+                    "Not Available"
+                  ) : (
+                    <>
+                      <CreditCard size={20} />
+                      Reserve Now - ₹{totalAmount}
+                    </>
+                  )}
+                </Button>
+
+                {isAvailable && !reservationCompleted && (
+                  <p
+                    className="text-center mt-3 mb-0"
+                    style={{
+                      color: isDark ? "#9CA3AF" : "#6B7280",
+                      fontSize: "0.875rem",
+                    }}
+                  >
+                    Secure payment powered by Razorpay
+                  </p>
+                )}
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </div>
     );
   };
 
   return (
     <div
-      id="vehicle-detail"
       style={{
-        backgroundColor: isDark ? "#0A0A0A" : "#F8F8F8", // Main section background
+        backgroundColor: isDark ? "#0A0A0A" : "#F9FAFB",
         minHeight: "100vh",
-        paddingTop: "2rem",
-        paddingBottom: "2rem",
-        transition: "background-color 0.3s ease-in-out",
+        transition: "background-color 0.3s ease",
       }}
     >
-      <Container>{renderContent()}</Container>
+      <Container className="py-5">{renderContent()}</Container>
     </div>
   );
 };
