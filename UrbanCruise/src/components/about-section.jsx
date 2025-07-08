@@ -71,21 +71,23 @@ const AboutSection = () => {
               <p className="fs-5 mb-4" style={{ color: textColor }}>
                 {" "}
                 {/* Adjusted font size and margin */}
-                Welcome to **UrbanCruise**, where your journey begins with a
-                tap! We have revolutionized the way you experience car and bike
-                rentals, making it incredibly **fast, secure, and stress-free**.
-                Whether you are planning an epic road trip, a quick city
-                commute, or just need wheels for the day, our intuitive platform
-                offers a **diverse fleet** to suit every adventure.
+                Welcome to **UrbanCruise, where your journey begins with a tap!
+                We have revolutionized the way you experience car and bike
+                rentals, making it incredibly fast, secure, and stress-free.
+                UrbanCruise transforms the way you explore cities—offering
+                secure user registration, lightning-fast vehicle browsing, and a
+                crystal-clear booking flow right at your fingertips. Enjoy
+                responsive, device-friendly design, hassle-free checkouts with
+                multiple payment options, and a handy history of all your past
+                rentals. Ready to hit the road?
               </p>
               <p className="fs-5 mb-4" style={{ color: textColor }}>
-                Browse seamlessly through our wide selection, choose **flexible
-                rental periods** that fit your schedule, and complete your
-                booking with **effortless, secure payments**. With UrbanCruise ,
-                you are always in control – access your **complete booking
-                history** anytime and enjoy peace of mind with our **dedicated
-                24/7 customer support**. Discover the freedom of the open road
-                with UrbanCruise!
+                Browse seamlessly through our wide selection, choose flexible
+                rental periods that fit your schedule, and complete your booking
+                with effortless, secure payments. With UrbanCruise , you are
+                always in control – access your complete booking history anytime
+                and enjoy peace of mind with our dedicated 24/7 customer
+                support. Discover the freedom of the open road with UrbanCruise!
               </p>
               {/* Developer Projects Link Section */}
               <div className="mt-4">
