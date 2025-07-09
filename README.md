@@ -110,7 +110,27 @@ To get UrbanCruise up and running on your local machine, follow these steps:
       ```
 
 **🌱 Seed Your Firestore Database**
-
+```
+📁 Firestore Database
+├── 📂 vehicle/
+│   ├── 📂 cars/ (vehicleId: 0, 1, 2...)
+│   │   └── 📄 {brandId, modelId, dailyRate, imageUrls, specs}
+│   └── 📂 bikes/ (vehicleId: 0, 1, 2...)
+│       └── 📄 {brandId, type, hourlyRate, specs}
+├── 📂 locations/ (locationId: 0, 1, 2...)
+│   └── 📄 {name, address, coordinates}
+├── 📂 brands/
+│   ├── 📂 cars/ (brandId: 0, 1, 2...)
+│   └── 📂 bikes/ (brandId: 0, 1, 2...)
+├── 📂 models/
+│   ├── 📂 cars/ (brandKey: {modelId: modelName})
+│   └── 📂 bikes/ (brandKey: {modelId: modelName})
+├── 📂 rentals/ (rentalId)
+│   └── 📄 {userId, vehicleId, dates, payment, status}
+└── 📂 users/ (userId)
+└── 📄 {profile, preferences, history}
+```
+or 
 - **`vehicle/cars/{vehicleId}`**
   - Documents named `0`, `1`, `2`, etc., containing keys like `brandId`, `modelId`, `dailyRate`, and image URLs.
 - **`vehicle/bikes/{vehicleId}`**
@@ -136,62 +156,86 @@ To get UrbanCruise up and running on your local machine, follow these steps:
 
 5.  **Set up Firebase Security Rules (Crucial for Admin Access):**
 
+
+````
+graph TD
+    A[Client Request] --> B[Cloud Function: Create Order]
+    B --> C[Razorpay API: Generate Order ID]
+    C --> D[Return Order ID to Client]
+    D --> E[Initialize Razorpay Checkout]
+    E --> F[Payment Success/Failure]
+    F --> G[Cloud Function: Verify Payment]
+    G --> H[Update Database]
+````
 ````
         - Go to your Firebase Console -> Firestore Database -> Rules tab.
         - Implement the following rules to secure your data and enable admin functionality. **Remember to replace `YOUR_ADMIN_USER_UID` with your actual Firebase User ID for admin access.**
 
           ```firestore
-          rules_version = '2';
+         rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
 
-    service cloud.firestore {
-    match /databases/{database}/documents {
-
-        /* ───────────── 1.  admin check ───────────── */
-        function isAdmin() {
-          return request.auth != null && request.auth.uid in [
-              //  ← your UID
-            // , "ANOTHER_ADMIN_UID"          //  add more if needed
-          ];
-        }
-
-        /* ───────────── 2.  PUBLIC catalogue reads  ───────────── */
-        // vehicle/*  (brands, cars, bikes, models kept here)
-        match /vehicle/{document=**} {
-          allow read: if true;           // anyone can browse
-          allow update, delete: if isAdmin();
-          // no create via client; seed via admin script or console
-        }
-
-        // supporting lists
-        match /locations/{id}            { allow read: if true; }
-        match /brands/{doc=**}           { allow read: if true; }
-        match /models/{doc=**}           { allow read: if true; }
-
-        /* ───────────── 3.  Authenticated users  ───────────── */
-        // fallback: all other reads require login
-        match /{document=**}             { allow read: if request.auth != null; }
-
-        /* ───────────── 4.  Rentals  ───────────── */
-        match /rentals/{rentalId} {
-          // create: any logged-in user, but only for their own email
-          allow create: if request.auth != null
-                        && request.resource.data.reservationOwner == request.auth.token.email;
-
-          // read / update / delete:
-          //   • admin can manage anyone
-          //   • owner can manage their own rental
-          allow read, update, delete: if isAdmin()
-            || (request.auth != null
-                && resource.data.reservationOwner == request.auth.token.email);
-        }
-
-        /* ───────────── 5.  Users collection (profile info) ───────────── */
-        match /users/{userId} {
-          allow read, write: if request.auth != null && request.auth.uid == userId;
-        }
-
+    /* ───────────── 1.  admin check ───────────── */
+    function isAdmin() {
+      return request.auth != null && request.auth.uid in [
+        "YshJSjIv9xhrDYgLvvoThLUFaiw2"   //  ← your UID
+        // , "ANOTHER_ADMIN_UID"          //  add more if needed
+      ];
     }
+
+    /* ───────────── 2.  PUBLIC catalogue reads  ───────────── */
+    // vehicle/*  (brands, cars, bikes, models kept here)
+    match /vehicle/{document} {
+      allow read: if true;           // anyone can browse
+      
+      // Allow authenticated users to update vehicle stock counts (for reservations)
+      allow update: if request.auth != null || isAdmin();
+      
+      // Only admins can delete
+      allow delete: if isAdmin();
+      // no create via client; seed via admin script or console
     }
+
+    // supporting lists
+    match /locations/{id} {
+      allow read: if true;
+    }
+    
+    match /brands/{doc} {
+      allow read: if true;
+    }
+    
+    match /models/{doc} {
+      allow read: if true;
+    }
+
+    /* ───────────── 3.  Authenticated users  ───────────── */
+    // fallback: all other reads require login
+    match /{document=**} {
+      allow read: if request.auth != null;
+    }
+
+    /* ───────────── 4.  Rentals  ───────────── */
+    match /rentals/{rentalId} {
+      // create: any logged-in user, but only for their own email
+      allow create: if request.auth != null
+                    && request.resource.data.reservationOwner == request.auth.token.email;
+
+      // read / update / delete:
+      //   • admin can manage anyone
+      //   • owner can manage their own rental
+      allow read, update, delete: if isAdmin()
+        || (request.auth != null
+            && resource.data.reservationOwner == request.auth.token.email);
+    }
+
+    /* ───────────── 5.  Users collection (profile info) ───────────── */
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
 
 ````
 
