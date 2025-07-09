@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-// Make sure the path to your Image2 is correct, including its extension if it has one (e.g., Image2.png)
-import Image2 from "../assets/images/image2.png";
+
+import carr from "../assets/images/carr.jpg";
 import { useTheme } from "../context/ThemeContext"; // Import useTheme hook
 
 const AboutSection = () => {
@@ -9,7 +9,7 @@ const AboutSection = () => {
 
   // Define dynamic styles based on the theme
   const sectionBgColor = theme === "dark" ? "#000000" : "#FFFFFF"; // Black background for dark mode
-  const headingColorDark = "#20C997"; // A vibrant green for dark mode heading
+  const headingColorDark = "#001F54"; // A vibrant green for dark mode heading
   const textColor = theme === "dark" ? "#E0E0E0" : "#555555"; // Light grey for dark mode text, dark grey for light mode
   const buttonBgColor = theme === "dark" ? "#6A5ACD" : "#007bff"; // Purple for dark, blue for light
   const buttonHoverColor = theme === "dark" ? "#7B68EE" : "#0056b3"; // Lighter purple for dark hover, darker blue for light hover
@@ -32,7 +32,7 @@ const AboutSection = () => {
           <Col xs={12} md={6}>
             <div className="image_iman text-center text-md-start mb-4 mb-md-0">
               <img
-                src={Image2} // Using Image2 as specified
+                src={carr}
                 className="about_img img-fluid"
                 alt="About UrbanCruise"
                 style={{
@@ -71,29 +71,33 @@ const AboutSection = () => {
               <p className="fs-5 mb-4" style={{ color: textColor }}>
                 {" "}
                 {/* Adjusted font size and margin */}
-                Welcome to **UrbanCruise, where your journey begins with a tap!
-                We have revolutionized the way you experience car and bike
-                rentals, making it incredibly fast, secure, and stress-free.
+                Welcome to UrbanCruise, where your journey begins with a tap! We
+                have revolutionized the way you experience car and bike rentals,
+                making it incredibly fast, secure, and stress-free.
+              </p>
+              <p className="fs-5.7 mb-4" style={{ color: textColor }}>
                 UrbanCruise transforms the way you explore cities—offering
                 secure user registration, lightning-fast vehicle browsing, and a
-                crystal-clear booking flow right at your fingertips. Enjoy
-                responsive, device-friendly design, hassle-free checkouts with
-                multiple payment options, and a handy history of all your past
-                rentals. Ready to hit the road?
+                crystal-clear booking flow right at your fingertips.
               </p>
-              <p className="fs-5 mb-4" style={{ color: textColor }}>
-                Browse seamlessly through our wide selection, choose flexible
-                rental periods that fit your schedule, and complete your booking
-                with effortless, secure payments. With UrbanCruise , you are
-                always in control – access your complete booking history anytime
-                and enjoy peace of mind with our dedicated 24/7 customer
-                support. Discover the freedom of the open road with UrbanCruise!
+              <p className="fs-5.7 mb-4" style={{ color: textColor }}>
+                Enjoy responsive, device-friendly design, hassle-free checkouts
+                with multiple payment options, and a handy history of all your
+                past rentals. Ready to hit the road? Browse seamlessly through
+                our wide selection, choose flexible rental periods that fit your
+                schedule.
+              </p>
+              <p className="fs-5.7 mb-4" style={{ color: textColor }}>
+                With UrbanCruise , you are always in control – access your
+                complete booking history anytime & enjoy peace of mind with our
+                dedicated 24/7 customer support. Discover the freedom of the
+                open road with UrbanCruise!
               </p>
               {/* Developer Projects Link Section */}
               <div className="mt-4">
                 {" "}
                 {/* More top margin for button */}
-                <p className="fs-6 mb-3" style={{ color: textColor }}>
+                <p className="fs-8 mb-3" style={{ color: textColor }}>
                   To see more projects by the developer, click on this link:
                 </p>
                 <Button

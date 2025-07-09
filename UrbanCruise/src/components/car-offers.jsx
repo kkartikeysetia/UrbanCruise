@@ -9,7 +9,7 @@ import {
   Form,
   Badge,
 } from "react-bootstrap";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -20,11 +20,7 @@ import {
   Car,
   Bike,
   ChevronRight,
-  Star,
-  MapPin,
   Fuel,
-  Calendar,
-  Users,
   ArrowRight,
 } from "lucide-react";
 
@@ -404,7 +400,6 @@ function FilterSection({
  */
 function CarOffers() {
   const { theme } = useTheme();
-  const navigate = useNavigate();
   const location = useLocation();
   const isDark = theme === "dark";
 

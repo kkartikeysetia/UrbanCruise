@@ -19,13 +19,11 @@ import {
   Gauge,
   Settings,
   Car,
-  Star,
   CreditCard,
   CheckCircle,
   Clock,
-  Users,
 } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   fetchBrands,
   fetchModels,
@@ -39,7 +37,6 @@ import { db, auth } from "../config/firebase";
 import { useTheme } from "../context/ThemeContext";
 
 const VehicleDetail = () => {
-  const dispatch = useDispatch();
   const user = useSelector(({ UserSlice }) => UserSlice.user);
   const { theme } = useTheme();
   const isDark = theme === "dark";
