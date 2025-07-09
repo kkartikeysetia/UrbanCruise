@@ -24,6 +24,8 @@ import {
   Sun,
   Moon,
   ChevronDown,
+  UserPlus,
+  LogIn,
 } from "lucide-react";
 
 import useAuthentication from "../hooks/useAuthentication";
@@ -335,6 +337,19 @@ const Header = () => {
         : "none",
   });
 
+  const dropdownItemStyle = {
+    color: isDark ? "#F9FAFB" : "#374151",
+    textDecoration: "none",
+    borderRadius: "8px",
+    margin: "4px",
+    padding: "8px 12px",
+    transition: "all 0.3s ease",
+  };
+
+  const dropdownItemHoverStyle = {
+    backgroundColor: isDark ? "#374151" : "#F3F4F6",
+  };
+
   return (
     <React.Fragment>
       {!location.pathname.includes("admin") && (
@@ -513,133 +528,189 @@ const Header = () => {
                     <span className="d-none d-md-inline">Help</span>
                   </Button>
 
-                  {/* User Actions */}
-                  {user ? (
-                    <Dropdown align="end">
-                      <Dropdown.Toggle
-                        className="border-0 d-flex align-items-center gap-2"
-                        style={buttonStyle("primary")}
-                      >
-                        <User size={18} />
-                        <span className="d-none d-md-inline">
-                          {user.name ||
+                  {/* User Actions Dropdown */}
+                  <Dropdown align="end">
+                    <Dropdown.Toggle
+                      className="border-0 d-flex align-items-center gap-2"
+                      style={buttonStyle("primary")}
+                    >
+                      <User size={18} />
+                      <span className="d-none d-md-inline">
+                        {user
+                          ? user.name ||
                             (user.email && user.email.split("@")[0]) ||
-                            "User"}
-                        </span>
-                        <ChevronDown size={16} />
-                      </Dropdown.Toggle>
+                            "Account"
+                          : "Account"}
+                      </span>
+                      <ChevronDown size={16} />
+                    </Dropdown.Toggle>
 
-                      <Dropdown.Menu
-                        style={{
-                          background: isDark ? "#1F2937" : "#FFFFFF",
-                          border: isDark
-                            ? "1px solid #374151"
-                            : "1px solid #E5E7EB",
-                          borderRadius: "12px",
-                          boxShadow: isDark
-                            ? "0 20px 40px rgba(0, 0, 0, 0.3)"
-                            : "0 20px 40px rgba(0, 0, 0, 0.1)",
-                          minWidth: "200px",
-                        }}
-                      >
-                        {isAdmin(user) && (
+                    <Dropdown.Menu
+                      style={{
+                        background: isDark ? "#1F2937" : "#FFFFFF",
+                        border: isDark
+                          ? "1px solid #374151"
+                          : "1px solid #E5E7EB",
+                        borderRadius: "12px",
+                        boxShadow: isDark
+                          ? "0 20px 40px rgba(0, 0, 0, 0.3)"
+                          : "0 20px 40px rgba(0, 0, 0, 0.1)",
+                        minWidth: "200px",
+                      }}
+                    >
+                      {/* If user is NOT logged in - show all 3 options */}
+                      {!user && (
+                        <>
                           <Dropdown.Item
                             as={Link}
-                            to="/admin"
-                            className="d-flex align-items-center gap-2 py-2"
-                            style={{
-                              color: isDark ? "#F9FAFB" : "#374151",
-                              textDecoration: "none",
-                              borderRadius: "8px",
-                              margin: "4px",
-                            }}
+                            to="/my-rentals"
+                            className="d-flex align-items-center gap-2"
+                            style={dropdownItemStyle}
+                            onMouseEnter={(e) =>
+                              Object.assign(
+                                e.target.style,
+                                dropdownItemHoverStyle
+                              )
+                            }
+                            onMouseLeave={(e) =>
+                              Object.assign(e.target.style, dropdownItemStyle)
+                            }
                           >
-                            <Settings size={16} />
-                            Admin Panel
+                            <Car size={16} />
+                            My Rentals
                           </Dropdown.Item>
-                        )}
 
-                        <Dropdown.Item
-                          as={Link}
-                          to="/my-rentals"
-                          className="d-flex align-items-center gap-2 py-2"
-                          style={{
-                            color: isDark ? "#F9FAFB" : "#374151",
-                            textDecoration: "none",
-                            borderRadius: "8px",
-                            margin: "4px",
-                          }}
-                        >
-                          <Car size={16} />
-                          My Rentals
-                        </Dropdown.Item>
+                          <Dropdown.Item
+                            as={Link}
+                            to="/login"
+                            className="d-flex align-items-center gap-2"
+                            style={dropdownItemStyle}
+                            onMouseEnter={(e) =>
+                              Object.assign(
+                                e.target.style,
+                                dropdownItemHoverStyle
+                              )
+                            }
+                            onMouseLeave={(e) =>
+                              Object.assign(e.target.style, dropdownItemStyle)
+                            }
+                          >
+                            <LogIn size={16} />
+                            Sign In
+                          </Dropdown.Item>
 
-                        <Dropdown.Divider
-                          style={{
-                            borderColor: isDark ? "#374151" : "#E5E7EB",
-                            margin: "8px 0",
-                          }}
-                        />
+                          <Dropdown.Item
+                            as={Link}
+                            to="/sign-up"
+                            className="d-flex align-items-center gap-2"
+                            style={dropdownItemStyle}
+                            onMouseEnter={(e) =>
+                              Object.assign(
+                                e.target.style,
+                                dropdownItemHoverStyle
+                              )
+                            }
+                            onMouseLeave={(e) =>
+                              Object.assign(e.target.style, dropdownItemStyle)
+                            }
+                          >
+                            <UserPlus size={16} />
+                            Sign Up
+                          </Dropdown.Item>
+                        </>
+                      )}
 
-                        <Dropdown.Item
-                          onClick={handleLogout}
-                          className="d-flex align-items-center gap-2 py-2"
-                          style={{
-                            color: "#EF4444",
-                            borderRadius: "8px",
-                            margin: "4px",
-                          }}
-                        >
-                          <LogOut size={16} />
-                          Sign Out
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  ) : (
-                    <div className="d-flex gap-2">
-                      <Button
-                        as={Link}
-                        to="/login"
-                        className="border-0"
-                        style={buttonStyle("secondary")}
-                        onMouseEnter={(e) => {
-                          e.target.style.background = isDark
-                            ? "#4B5563"
-                            : "#E5E7EB";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.background = isDark
-                            ? "#374151"
-                            : "#F3F4F6";
-                        }}
-                      >
-                        <User size={18} />
-                        <span className="d-none d-sm-inline">Sign In</span>
-                      </Button>
+                      {/* If user is logged in - show My Rentals and admin panel if admin */}
+                      {user && (
+                        <>
+                          {/* Admin Panel - only for admin users */}
+                          {isAdmin(user) && (
+                            <>
+                              <Dropdown.Item
+                                as={Link}
+                                to="/admin"
+                                className="d-flex align-items-center gap-2"
+                                style={dropdownItemStyle}
+                                onMouseEnter={(e) =>
+                                  Object.assign(
+                                    e.target.style,
+                                    dropdownItemHoverStyle
+                                  )
+                                }
+                                onMouseLeave={(e) =>
+                                  Object.assign(
+                                    e.target.style,
+                                    dropdownItemStyle
+                                  )
+                                }
+                              >
+                                <Settings size={16} />
+                                Admin Panel
+                              </Dropdown.Item>
+                              <Dropdown.Divider
+                                style={{
+                                  borderColor: isDark ? "#374151" : "#E5E7EB",
+                                  margin: "8px 0",
+                                }}
+                              />
+                            </>
+                          )}
 
-                      <Button
-                        as={Link}
-                        to="/sign-up"
-                        className="border-0"
-                        style={buttonStyle("primary")}
-                        onMouseEnter={(e) => {
-                          e.target.style.transform = "translateY(-1px)";
-                          e.target.style.boxShadow = isDark
-                            ? "0 6px 20px rgba(59, 130, 246, 0.4)"
-                            : "0 6px 20px rgba(37, 99, 235, 0.4)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.transform = "translateY(0)";
-                          e.target.style.boxShadow = isDark
-                            ? "0 4px 14px rgba(59, 130, 246, 0.3)"
-                            : "0 4px 14px rgba(37, 99, 235, 0.3)";
-                        }}
-                      >
-                        <User size={18} />
-                        <span className="d-none d-sm-inline">Sign Up</span>
-                      </Button>
-                    </div>
-                  )}
+                          {/* My Rentals - always show for logged in users */}
+                          <Dropdown.Item
+                            as={Link}
+                            to="/my-rentals"
+                            className="d-flex align-items-center gap-2"
+                            style={dropdownItemStyle}
+                            onMouseEnter={(e) =>
+                              Object.assign(
+                                e.target.style,
+                                dropdownItemHoverStyle
+                              )
+                            }
+                            onMouseLeave={(e) =>
+                              Object.assign(e.target.style, dropdownItemStyle)
+                            }
+                          >
+                            <Car size={16} />
+                            My Rentals
+                          </Dropdown.Item>
+
+                          <Dropdown.Divider
+                            style={{
+                              borderColor: isDark ? "#374151" : "#E5E7EB",
+                              margin: "8px 0",
+                            }}
+                          />
+
+                          {/* Sign Out - always show for logged in users */}
+                          <Dropdown.Item
+                            onClick={handleLogout}
+                            className="d-flex align-items-center gap-2"
+                            style={{
+                              ...dropdownItemStyle,
+                              color: "#EF4444",
+                            }}
+                            onMouseEnter={(e) =>
+                              Object.assign(e.target.style, {
+                                ...dropdownItemHoverStyle,
+                                color: "#EF4444",
+                              })
+                            }
+                            onMouseLeave={(e) =>
+                              Object.assign(e.target.style, {
+                                ...dropdownItemStyle,
+                                color: "#EF4444",
+                              })
+                            }
+                          >
+                            <LogOut size={16} />
+                            Sign Out
+                          </Dropdown.Item>
+                        </>
+                      )}
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </div>
               </Navbar.Collapse>
             </Container>

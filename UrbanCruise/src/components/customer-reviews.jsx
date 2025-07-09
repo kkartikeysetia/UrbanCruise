@@ -222,7 +222,7 @@ const CustomerReview = () => {
                                     }}
                                     onError={(e) => {
                                       e.target.src =
-                                        "https://via.placeholder.com/56x56/3B82F6/FFFFFF?text=" +
+                                        "https://placehold.co/56x56/3B82F6/FFFFFF?text=" +
                                         review.name.charAt(0);
                                     }}
                                   />
