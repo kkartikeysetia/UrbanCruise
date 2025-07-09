@@ -14,7 +14,7 @@ const slides = [
     gradient: "from-orange-500 to-red-600",
   },
   {
-    image: "/car.jpg",
+    image: "/carr.jpg",
     title: "Drive in Style",
     tagline:
       "Your journey, your rules – explore with our luxury and economical cars.",
