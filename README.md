@@ -28,15 +28,6 @@ UrbanCruise transforms the way you explore cities—offering secure user registr
 - 📊 **Admin Panel:** Centralized overview, grouped by user email, with detailed expand-and-manage views
 - 🌙 **Dark/Light Theme Toggle:** Let users switch between themes with a single click .
 
-### Admin Features (Rentals Management Panel):
-
-- **Centralized Overview:** Access a dedicated admin panel to view all reservations made across the platform.
-- **Grouped Reservations:** Reservations are intuitively grouped by the owner's email, making it easy to manage multiple rentals from a single user.
-- **Detailed Reservation View:** Expand each reservation to see full vehicle details and rental specifics.
-- **Individual Reservation Cancellation:** Admins can cancel any specific reservation from any user.
-- **Bulk User Reservation Cancellation:** For efficient management, admins have the power to cancel **all** reservations belonging to a particular user.
-- **Secure Admin Access:** Admin permissions are enforced through Firebase Security Rules, ensuring that only authorized accounts can perform administrative actions.
-
 ## 🚀 Technologies Used
 
 - **Frontend:**
