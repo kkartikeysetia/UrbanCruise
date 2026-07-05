@@ -21,8 +21,6 @@ import {
   LogOut,
   Settings,
   HelpCircle,
-  Sun,
-  Moon,
   ChevronDown,
   UserPlus,
   LogIn,
@@ -37,7 +35,7 @@ const Header = () => {
   const navigate = useNavigate();
   const user = useSelector(({ UserSlice }) => UserSlice.user);
   const { signOutCall } = useAuthentication();
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const isDark = theme === "dark";
 
   const [isNavOpen, setIsNavOpen] = useState(false);
