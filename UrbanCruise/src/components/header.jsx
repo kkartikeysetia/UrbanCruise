@@ -273,12 +273,12 @@ const Header = () => {
         ? "#3B82F6"
         : "#2563EB"
       : isHovered
-      ? isDark
-        ? "#60A5FA"
-        : "#1D4ED8"
-      : isDark
-      ? "#E5E7EB"
-      : "#374151",
+        ? isDark
+          ? "#60A5FA"
+          : "#1D4ED8"
+        : isDark
+          ? "#E5E7EB"
+          : "#374151",
     textDecoration: "none",
     padding: "12px 20px",
     borderRadius: "12px",
@@ -293,10 +293,10 @@ const Header = () => {
         ? "rgba(59, 130, 246, 0.1)"
         : "rgba(37, 99, 235, 0.1)"
       : isHovered
-      ? isDark
-        ? "rgba(59, 130, 246, 0.05)"
-        : "rgba(37, 99, 235, 0.05)"
-      : "transparent",
+        ? isDark
+          ? "rgba(59, 130, 246, 0.05)"
+          : "rgba(37, 99, 235, 0.05)"
+        : "transparent",
   });
 
   const buttonStyle = (variant = "primary") => ({
@@ -315,20 +315,20 @@ const Header = () => {
           ? "linear-gradient(135deg, #3B82F6, #1D4ED8)"
           : "linear-gradient(135deg, #2563EB, #1D4ED8)"
         : variant === "secondary"
-        ? isDark
-          ? "#374151"
-          : "#F3F4F6"
-        : "transparent",
+          ? isDark
+            ? "#374151"
+            : "#F3F4F6"
+          : "transparent",
     color:
       variant === "primary"
         ? "#FFFFFF"
         : variant === "secondary"
-        ? isDark
-          ? "#F9FAFB"
-          : "#374151"
-        : isDark
-        ? "#E5E7EB"
-        : "#6B7280",
+          ? isDark
+            ? "#F9FAFB"
+            : "#374151"
+          : isDark
+            ? "#E5E7EB"
+            : "#6B7280",
     boxShadow:
       variant === "primary"
         ? isDark
@@ -485,7 +485,7 @@ const Header = () => {
                 {/* Right Side Actions */}
                 <div className="d-flex align-items-center gap-3">
                   {/* Theme Toggle */}
-                  <Button
+                  {/* <Button
                     onClick={toggleTheme}
                     className="border-0 p-2"
                     style={{
@@ -506,7 +506,7 @@ const Header = () => {
                     }}
                   >
                     {isDark ? <Sun size={18} /> : <Moon size={18} />}
-                  </Button>
+                  </Button> */}
 
                   {/* Help Button */}
                   <Button
@@ -569,7 +569,7 @@ const Header = () => {
                             onMouseEnter={(e) =>
                               Object.assign(
                                 e.target.style,
-                                dropdownItemHoverStyle
+                                dropdownItemHoverStyle,
                               )
                             }
                             onMouseLeave={(e) =>
@@ -588,7 +588,7 @@ const Header = () => {
                             onMouseEnter={(e) =>
                               Object.assign(
                                 e.target.style,
-                                dropdownItemHoverStyle
+                                dropdownItemHoverStyle,
                               )
                             }
                             onMouseLeave={(e) =>
@@ -607,7 +607,7 @@ const Header = () => {
                             onMouseEnter={(e) =>
                               Object.assign(
                                 e.target.style,
-                                dropdownItemHoverStyle
+                                dropdownItemHoverStyle,
                               )
                             }
                             onMouseLeave={(e) =>
@@ -634,13 +634,13 @@ const Header = () => {
                                 onMouseEnter={(e) =>
                                   Object.assign(
                                     e.target.style,
-                                    dropdownItemHoverStyle
+                                    dropdownItemHoverStyle,
                                   )
                                 }
                                 onMouseLeave={(e) =>
                                   Object.assign(
                                     e.target.style,
-                                    dropdownItemStyle
+                                    dropdownItemStyle,
                                   )
                                 }
                               >
@@ -665,7 +665,7 @@ const Header = () => {
                             onMouseEnter={(e) =>
                               Object.assign(
                                 e.target.style,
-                                dropdownItemHoverStyle
+                                dropdownItemHoverStyle,
                               )
                             }
                             onMouseLeave={(e) =>
